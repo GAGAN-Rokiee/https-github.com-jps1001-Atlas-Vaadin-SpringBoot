@@ -1,24 +1,35 @@
 package it.besolution.mapper;
 
-import it.besolution.dto.ObjectClassDto;
+import it.besolution.model.ObjectClass;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ObjectClassMapper implements RowMapper<ObjectClassDto> {
+public class ObjectClassMapper implements RowMapper<ObjectClass> {
+
 
     @Override
-    public ObjectClassDto mapRow(ResultSet resultSet, int i) throws SQLException {
+    public ObjectClass mapRow(ResultSet resultSet, int i) throws SQLException {
 
-        ObjectClassDto dto = new ObjectClassDto();
-        dto.setId(resultSet.getInt("id"));
-        dto.setClassName(resultSet.getString("class_name"));
-        dto.setEntityName(resultSet.getString("entity_name"));
-        dto.setCounterName(resultSet.getString("counter_name"));
-        dto.setSecurityEnabled(resultSet.getInt("security_enabled") == 1);
-        dto.setSystemClass(resultSet.getInt("system_class") == 1);
+        ObjectClass objClass = new ObjectClass();
+        objClass.setId(resultSet.getInt("id"));
+        objClass.setUniqueId(resultSet.getString("unique_id"));
+        objClass.setClassName(resultSet.getString("class_name"));
+        objClass.setDescription(resultSet.getString("description"));
+        objClass.setBaseType(resultSet.getInt("base_type"));
+        objClass.setClassType(resultSet.getInt("class_type"));
+        objClass.setBasePath(resultSet.getString("base_path"));
+        objClass.setEntityName(resultSet.getString("entity_name"));
+        objClass.setSecurityEnabled(resultSet.getInt("security_enabled") == 1);
+        objClass.setCryptoContent(resultSet.getInt("crypto_content") == 1);
+        objClass.setCounterName(resultSet.getString("counter_name"));
+        objClass.setStorageType(resultSet.getInt("storage_type"));
+        objClass.setSystemClass(resultSet.getInt("system_class") == 1);
+        objClass.setDefaultWorkflow(resultSet.getString("default_workflow"));
+        objClass.setLastUpdated(resultSet.getDate("last_updated"));
+        objClass.setSolutionId(resultSet.getInt("solution_id"));
 
-        return dto;
+        return objClass;
     }
 }

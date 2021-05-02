@@ -1,13 +1,13 @@
-CREATE TABLE solutions
+CREATE TABLE IF NOT EXISTS solutions
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
     template_name VARCHAR(64) NOT NULL,
     prefix        VARCHAR(10) NOT NULL,
     description   VARCHAR(500) NULL,
-    last_updated  DATE        NOT NULL DEFAULT CURRENT_DATE
+    last_updated  TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE object_class
+CREATE TABLE IF NOT EXISTS object_class
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
     unique_id        VARCHAR(50)  NOT NULL,

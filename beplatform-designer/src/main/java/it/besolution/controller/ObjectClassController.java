@@ -23,19 +23,41 @@ public class ObjectClassController {
     @Autowired
     private ObjectClassService objectClassService;
 
-    @GetMapping("/all")
-    public ResponseEntity<ApiRestResponse> getAllObjectClasses() {
+    @GetMapping("/all/{solutionId}")
+    public ResponseEntity<ApiRestResponse> getAllObjectClasses(@PathVariable Integer solutionId) {
 
         ApiRestResponse response = null;
         try {
             LOG.info("Getting all object classes");
-            final List<ObjectClassDto> all = objectClassService.findAll();
+            final List<ObjectClassDto> all = objectClassService.findAllBySolutionId(solutionId);
             response = new ApiRestResponse();
             response.setData(all);
             LOG.info("All object classes fetched");
         } catch (Exception ex) {
 
             LOG.error("Error while fetching all object classes. Error: {}", ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+        }
+
+        return new ResponseEntity<>(response,
+                response.getIsError() ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK);
+    }
+
+    @GetMapping("/{objectClassId}/solution/{solutionId}")
+    public ResponseEntity<ApiRestResponse> getAllObjectClasses(@PathVariable Integer objectClassId,
+                                                               @PathVariable Integer solutionId) {
+
+        ApiRestResponse response = null;
+        try {
+            LOG.info("Getting object classes for Id: {}", objectClassId);
+            final ObjectClass objectClass = objectClassService
+                    .findBySolutionIdAndObjectClassId(solutionId, objectClassId);
+            response = new ApiRestResponse();
+            response.setData(objectClass);
+            LOG.info("Object classes fetched");
+        } catch (Exception ex) {
+
+            LOG.error("Error while fetching Object classes for Id: {}. Error: {}", objectClassId, ex.getMessage());
             response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 
@@ -57,6 +79,26 @@ public class ObjectClassController {
         } catch (Exception ex) {
 
             LOG.error("Error while saving the object class. Error: {}", ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+        }
+
+        return new ResponseEntity<>(response,
+                response.getIsError() ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<ApiRestResponse> saveObjectClass(@RequestBody ObjectClass objectClass) {
+
+        ApiRestResponse response = null;
+        try {
+            LOG.info("Updating the object classes for Id: {}", objectClass.getId());
+            final ObjectClass updatedObject = objectClassService.updateObjectClass(objectClass);
+            response = new ApiRestResponse();
+            response.setData(updatedObject);
+            LOG.info("Object classes updated");
+        } catch (Exception ex) {
+
+            LOG.error("Error while updating the object class. Error: {}", ex.getMessage());
             response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 

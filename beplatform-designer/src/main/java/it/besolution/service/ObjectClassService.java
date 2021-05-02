@@ -1,6 +1,5 @@
 package it.besolution.service;
 
-import it.besolution.controller.ObjectClassController;
 import it.besolution.dto.ObjectClassDto;
 import it.besolution.model.ObjectClass;
 import it.besolution.repository.ObjectClassRepository;
@@ -35,7 +34,15 @@ public class ObjectClassService {
         return objectClassRepository.save(objectClass);
     }
 
-    public List<ObjectClassDto> findAll() throws Exception {
-        return objectClassRepository.findAll();
+    public List<ObjectClassDto> findAllBySolutionId(Integer solutionId) throws Exception {
+        return objectClassRepository.findAllBySolutionId(solutionId);
+    }
+
+    public ObjectClass findBySolutionIdAndObjectClassId(Integer solutionId, Integer objectClassId) throws Exception {
+        return objectClassRepository.findBySolutionIdAndObjectClassId(solutionId, objectClassId);
+    }
+
+    public ObjectClass updateObjectClass(ObjectClass objectClass) throws Exception {
+        return objectClassRepository.updateObjectClass(objectClass);
     }
 }
