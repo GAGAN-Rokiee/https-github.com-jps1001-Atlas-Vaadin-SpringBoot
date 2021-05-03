@@ -2,12 +2,17 @@ package it.besolution.ui.solution;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
+import it.besolution.ui.HomeView;
 
 
 public class SolutionView extends VerticalLayout {
@@ -16,6 +21,9 @@ public class SolutionView extends VerticalLayout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOG = LoggerFactory.getLogger(HomeView.class);
+
 
 	public SolutionView() {
 
@@ -45,7 +53,7 @@ public class SolutionView extends VerticalLayout {
 
 			add(hLayoutHeader);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error: {}", e.getMessage());
 		}
 
 
@@ -89,7 +97,7 @@ public class SolutionView extends VerticalLayout {
 			add(scroller);
 			setHorizontalComponentAlignment(Alignment.CENTER, scroller);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error: {}", e.getMessage());
 		}
 	}
 

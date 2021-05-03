@@ -4,7 +4,8 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -13,9 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import it.besolution.utils.Constants;
 
-@Service
 public class SolutionPresenter {
 
+	private static final Logger LOG = LoggerFactory.getLogger(SolutionPresenter.class);
 
 	public List<SolutionModel> getSolutions() {
 		try {
@@ -31,7 +32,7 @@ public class SolutionPresenter {
 
 			return listOfSolutions;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error: {}", e.getMessage());
 		}
 		return null;
 	}
