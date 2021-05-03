@@ -1,0 +1,6 @@
+.buttonLayout{
+	height: 12.5rem;
+	width: 20%;
+	border: 1px solid black;
+	cursor: pointer;
+}
