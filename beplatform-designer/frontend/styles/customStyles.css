@@ -1,13 +1,39 @@
-.buttonLayout{
+
+     --lumo-contrast-20pct = white;
+
+.buttonLayoutGreen{
 	height: 12.5rem;
 	width: 20%;
-	border: 1px solid black;
+	background: #15c15d;
+	color: white;
+	border-radius: 10px;
 	cursor: pointer;
+	font-size: large;
 }
+
+.buttonLayoutBlue{
+	height: 12.5rem;
+	width: 20%;
+	background: #1676f3;
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: large;
+}
+
 .header{
 	background: #343434;
 	
 }
 .solutionTemplate{
-	border: 1px solid #343434;
+	background: #15c15d;
+	color: white;
+	border-radius: 10px;
+}
+.rightNavigationLayout{
+	background: #3e3e3e;
+}
+
+.chkBxNewSolution{
+	color: white;
 }

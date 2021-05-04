@@ -3,13 +3,14 @@ package it.besolution.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import it.besolution.ui.solution.SolutionView;
+import it.besolution.ui.solution.NewSolutionView;
 import it.besolution.utils.ScreenFactory;
 
 public class HomeView extends VerticalLayout {
@@ -32,7 +33,7 @@ public class HomeView extends VerticalLayout {
 	private void createForm() {
 		try {
 
-			Label lblInfo = new Label("Open a solution or create a new one");
+			H4 lblInfo = new H4("Open a solution or create a new one");
 			lblInfo.getStyle().set("font-size", "1.5rem");
 
 			HorizontalLayout hLayoutMain = new HorizontalLayout();
@@ -41,7 +42,7 @@ public class HomeView extends VerticalLayout {
 			hLayoutMain.setJustifyContentMode(JustifyContentMode.CENTER);
 
 			VerticalLayout vLayoutImport = new VerticalLayout();
-			vLayoutImport.addClassName("buttonLayout");
+			vLayoutImport.addClassName("buttonLayoutBlue");
 			vLayoutImport.setWidth(null);
 
 			Icon iconImport = new Icon(VaadinIcon.ADD_DOCK);
@@ -55,14 +56,14 @@ public class HomeView extends VerticalLayout {
 			vLayoutImport.setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
 			VerticalLayout vLayoutNew = new VerticalLayout();
-			vLayoutNew.addClassName("buttonLayout");
+			vLayoutNew.addClassName("buttonLayoutGreen");
 			vLayoutNew.setWidth(null);
-			vLayoutNew.getStyle().set("margin-left", "5%");
+			vLayoutNew.getStyle().set("margin-left", "10%");
 
 			vLayoutNew.addClickListener(event -> {
 				try {
 
-					ScreenFactory.getInstance().mainview.changeScreen(new SolutionView());
+					ScreenFactory.getInstance().mainview.changeScreen(new NewSolutionView());
 
 				} catch (Exception e) {
 					LOG.error("Error: {}", e.getMessage());

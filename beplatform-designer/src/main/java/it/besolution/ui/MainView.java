@@ -1,5 +1,7 @@
 package it.besolution.ui;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +20,9 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import com.vaadin.flow.theme.material.Material;
 
+import it.besolution.ui.solution.SolutionModel;
+import it.besolution.ui.solution.SolutionPresenter;
+import it.besolution.ui.solution.SolutionView;
 import it.besolution.utils.ScreenFactory;
 
 /**
@@ -39,35 +44,45 @@ public class MainView extends VerticalLayout{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-    private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
-	
+	private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
+
+
 	private Scroller panel = null;
 
 	public MainView() {
-		
+
 		ScreenFactory.getInstance().mainview = this;
-		
+
 		setPadding(false);
+		setSpacing(false);
 		setSizeFull();
 		createHeader();
 		createContent();
-		
+
 
 	}
 
 	private void createContent() {
 		try {
-			
+
 			panel = new Scroller();
 			panel.setSizeFull();
-			panel.setContent(new HomeView());
-			
+
+			List<SolutionModel> solutionList = new SolutionPresenter().getSolutions();
+
+			if(solutionList.size()<0) {
+				
+				panel.setContent(new SolutionView(solutionList));
+			}
+			else {
+
+				panel.setContent(new HomeView());
+			}
 			add(panel);
-			
+
 		} catch (Exception e) {
-			 LOG.error("Error: {}", e.getMessage());
+			LOG.error("Error: {}", e.getMessage());
 
 		}
 
@@ -75,32 +90,32 @@ public class MainView extends VerticalLayout{
 
 	private void createHeader() {
 		try {
-			
+
 			HorizontalLayout headerLayout = new HorizontalLayout();
 			headerLayout.addClassName("header");
 			headerLayout.setWidthFull();
 			headerLayout.setPadding(true);
-			
-			Label lblTitle = new Label("Logo / Title");
+
+			Label lblTitle = new Label("Be-Designer");
 			lblTitle.getStyle().set("font-size", "2rem");
 			lblTitle.getStyle().set("color", "white");
-			
+
 			headerLayout.add(lblTitle);
-			
-			
+
+
 			add(headerLayout);
-			
+
 		} catch (Exception e) {
-			 LOG.error("Error: {}", e.getMessage());
+			LOG.error("Error: {}", e.getMessage());
 		}
 
 	}
-	
+
 	public void changeScreen(Component content) {
 		try {
 			panel.setContent(content);
 		} catch (Exception e) {
-			 LOG.error("Error: {}", e.getMessage());
+			LOG.error("Error: {}", e.getMessage());
 		}
 	}
 }

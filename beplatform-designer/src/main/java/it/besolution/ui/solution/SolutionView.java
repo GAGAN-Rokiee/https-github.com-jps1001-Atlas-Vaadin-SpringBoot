@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -13,6 +15,7 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import it.besolution.ui.HomeView;
+import it.besolution.utils.ScreenFactory;
 
 
 public class SolutionView extends VerticalLayout {
@@ -23,15 +26,19 @@ public class SolutionView extends VerticalLayout {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger LOG = LoggerFactory.getLogger(HomeView.class);
+	
+	private List<SolutionModel> solutionList = null;
 
 
-	public SolutionView() {
+	public SolutionView(List<SolutionModel> solutionList) {
 
+		this.solutionList = solutionList;
 		setSizeFull();
 		createHeader();
 		createForm();
 		setJustifyContentMode(JustifyContentMode.CENTER);
 	}
+	
 
 	private void createHeader() {
 
@@ -40,14 +47,26 @@ public class SolutionView extends VerticalLayout {
 			hLayoutHeader.setWidthFull();
 			hLayoutHeader.getStyle().set("margin-bottom", "auto");
 
-			Label lblPageTitle = new Label("Solution");
+			H2 lblPageTitle = new H2("Solution");
 			lblPageTitle.getStyle().set("flex-grow", "1");
 
 			Button btnNew = new Button("New");
 			btnNew.setIcon(VaadinIcon.PLUS.create());
+			btnNew.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			
+			btnNew.addClickListener(x -> {
+				try {
+				
+					ScreenFactory.getInstance().mainview.changeScreen(new NewSolutionView());
+					
+				} catch (Exception e) {
+					LOG.error("Error: {}", e.getMessage());
+				}
+			});
 			
 			Button btnImport  = new Button("Import");
 			btnImport.setIcon(VaadinIcon.ADD_DOCK.create());
+			btnImport.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 			hLayoutHeader.add(lblPageTitle,btnNew,btnImport);
 
@@ -71,9 +90,6 @@ public class SolutionView extends VerticalLayout {
 			hLayoutTemplates.setJustifyContentMode(JustifyContentMode.CENTER);
 			hLayoutTemplates.setSpacing(false);
 			
-			List<SolutionModel> solutionList = new SolutionPresenter().getSolutions();
-
-
 			for(SolutionModel solution:solutionList) 
 			{
 				VerticalLayout vLayoutTemplate =  new VerticalLayout(); 
