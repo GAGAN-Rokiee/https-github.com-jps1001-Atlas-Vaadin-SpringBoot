@@ -27,12 +27,12 @@ public class SolutionView extends VerticalLayout {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(HomeView.class);
 	
-	private List<SolutionModel> solutionList = null;
+	private HorizontalLayout hLayoutTemplates = null;
+	
 
 
-	public SolutionView(List<SolutionModel> solutionList) {
+	public SolutionView() {
 
-		this.solutionList = solutionList;
 		setSizeFull();
 		createHeader();
 		createForm();
@@ -57,7 +57,7 @@ public class SolutionView extends VerticalLayout {
 			btnNew.addClickListener(x -> {
 				try {
 				
-					ScreenFactory.getInstance().mainview.changeScreen(new NewSolutionView());
+					ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().newSolutionView);
 					
 				} catch (Exception e) {
 					LOG.error("Error: {}", e.getMessage());
@@ -85,10 +85,25 @@ public class SolutionView extends VerticalLayout {
 			scroller.setHeightFull();
 			scroller.getStyle().set("margin-bottom", "auto");
 			
-			HorizontalLayout hLayoutTemplates = new HorizontalLayout();
+			hLayoutTemplates = new HorizontalLayout();
 			hLayoutTemplates.getStyle().set("flex-wrap", "wrap");
 			hLayoutTemplates.setJustifyContentMode(JustifyContentMode.CENTER);
 			hLayoutTemplates.setSpacing(false);
+			
+
+
+			scroller.setContent(hLayoutTemplates);
+			add(scroller);
+			setHorizontalComponentAlignment(Alignment.CENTER, scroller);
+		} catch (Exception e) {
+			LOG.error("Error: {}", e.getMessage());
+		}
+	}
+	
+	public void addTemplates(List<SolutionModel> solutionList) {
+		try {
+			
+			hLayoutTemplates.removeAll();
 			
 			for(SolutionModel solution:solutionList) 
 			{
@@ -108,10 +123,7 @@ public class SolutionView extends VerticalLayout {
 
 				hLayoutTemplates.add(vLayoutTemplate); 
 			}
-
-			scroller.setContent(hLayoutTemplates);
-			add(scroller);
-			setHorizontalComponentAlignment(Alignment.CENTER, scroller);
+			
 		} catch (Exception e) {
 			LOG.error("Error: {}", e.getMessage());
 		}
