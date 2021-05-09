@@ -39,8 +39,8 @@ public class BeplatformDesignerApplication{
 			request.append("WEB-INF");request.append(File.separator);request.append("CONSTANTS.properties");
 			Properties prop = CommonUtils.loadPropertyFile(request.toString());
 			
-			Constants.SOLUTION_GET_ALL = CommonUtils.getValue(prop, "api-solution-get-all");
-			
+			Constants.API_SOLUTION_GET_ALL = CommonUtils.getValue(prop, "api-solution-get-all");
+			Constants.API_SOLUTION_NEW= CommonUtils.getValue(prop, "api-solution-new");
 
 		} 
 		catch(Exception exp)
