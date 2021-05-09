@@ -37,3 +37,22 @@
 	width: 20px;
 	border-radius: 10px;
 }
+.lblSolutionDtl{
+	font-size: 20px;
+}
+.navIco{
+	width: 16px;
+	color: white;
+}
+.navLbl{
+	color: white;
+}
+.btnNavSol{
+	background: transparent;
+	color: white;
+}
+.btnNav{
+	background: transparent;
+	color: white;
+	margin: 0px;
+}
