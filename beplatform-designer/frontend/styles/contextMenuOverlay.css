@@ -1,0 +1,6 @@
+:host([theme~="menuSolDtl"]) [part="content"] {
+    width: 12rem;
+    height: 12rem;
+    border-radius: 2px;
+    background: #3e3e3e;
+}
