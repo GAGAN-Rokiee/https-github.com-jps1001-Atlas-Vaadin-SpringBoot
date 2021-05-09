@@ -3,9 +3,11 @@ package it.besolution.utils;
 import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.ui.HomeView;
+import it.besolution.ui.MainNavigationView;
 import it.besolution.ui.MainView;
 import it.besolution.ui.solution.NewSolutionView;
-import it.besolution.ui.solution.SolutionView;
+import it.besolution.ui.solution.SolutionDetailView;
+import it.besolution.ui.solution.SolutionListView;
 
 public class ScreenFactory {
 
@@ -23,8 +25,10 @@ public class ScreenFactory {
 
 	public MainView mainview = null;
 	public HomeView homeView = null;
-	public SolutionView solutionView = null;
+	public SolutionListView solutionListView = null;
 	public NewSolutionView newSolutionView = null;
+	public MainNavigationView mainNavigationView = null;
+	public SolutionDetailView solutionDetailView = null;
 
 	public Object getScreen(int screenId) {
 
@@ -40,15 +44,26 @@ public class ScreenFactory {
 			}
 			return homeView;
 		case 3:
-			if(null == solutionView) {
-				solutionView =  new SolutionView();
+			if(null == solutionListView) {
+				solutionListView =  new SolutionListView();
 			}
-			return solutionView;
+			return solutionListView;
 		case 4:
 			if(null == newSolutionView) {
 				newSolutionView =  new NewSolutionView();
 			}
 			return newSolutionView;
+		case 5:
+			if(null == mainNavigationView) {
+				mainNavigationView =  new MainNavigationView();
+			}
+			return mainNavigationView;
+		case 6:
+			if(null == solutionDetailView) {
+				solutionDetailView =  new SolutionDetailView();
+			}
+			return solutionDetailView;		
+			
 
 		default:
 			return null;

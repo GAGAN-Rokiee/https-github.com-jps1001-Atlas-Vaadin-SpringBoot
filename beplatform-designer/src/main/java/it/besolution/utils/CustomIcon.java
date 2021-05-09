@@ -15,7 +15,15 @@ public enum CustomIcon {
   
     ZOOM_OUT("zoom-out"),
     CHECKBOX_CHECKED("checkbox-checked"),
-    CHECKBOX_UNCHECKED("checkbox-unchecked");
+    CHECKBOX_UNCHECKED("checkbox-unchecked"),
+    SETTINGS("settings"),
+    EARTH("earth"),
+    POWER("power"),
+    PLAY("play"),
+    DATABASE("database"),
+    USERS("users"),
+    DISPLAY("display"),
+    MENU("menu");
 
     private String iconString;
     
