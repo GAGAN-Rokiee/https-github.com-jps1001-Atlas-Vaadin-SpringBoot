@@ -58,7 +58,8 @@ public class SolutionPresenter {
 						
 			ApiRestResponse restResponse = new ApiRestResponse();
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
-			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));	
+			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
+			restResponse.setData(obj.get("data"));
 		
 			return restResponse;
 		}

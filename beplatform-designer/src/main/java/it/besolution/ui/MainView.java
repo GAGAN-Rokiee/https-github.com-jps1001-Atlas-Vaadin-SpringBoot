@@ -55,7 +55,6 @@ public class MainView extends VerticalLayout{
 	private Scroller panel = null;
 	private Icon icoMenu = null;
 	private Icon icoSettings = null;
-	private List<SolutionModel> solutionList = null;
 
 	public MainView() {
 
@@ -94,7 +93,7 @@ public class MainView extends VerticalLayout{
 			panel = new Scroller();
 			panel.setSizeFull();
 
-			solutionList = new SolutionPresenter().getSolutions();
+			List<SolutionModel>  solutionList = new SolutionPresenter().getSolutions();
 
 			if(solutionList.size()>0) {
 
@@ -140,6 +139,8 @@ public class MainView extends VerticalLayout{
 			
 			icoMenu.addClickListener(event -> {
 				try {
+					
+					List<SolutionModel>  solutionList = new SolutionPresenter().getSolutions();
 					
 					ScreenFactory.getInstance().solutionListView.addTemplates(solutionList);
 					panel.setContent(ScreenFactory.getInstance().solutionListView);

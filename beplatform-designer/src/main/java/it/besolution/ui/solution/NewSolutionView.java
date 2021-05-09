@@ -3,6 +3,9 @@ package it.besolution.ui.solution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -354,13 +357,13 @@ public class NewSolutionView extends HorizontalLayout{
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
 						
-						Solution solutionModel = new Solution();
-						solutionModel.setTemplateName(txtName.getValue());
-						solutionModel.setPrefix(txtPrefix.getValue());
-						solutionModel.setDescription(txtDesc.getValue());
+						Solution solution = new Solution();
+						solution.setTemplateName(txtName.getValue());
+						solution.setPrefix(txtPrefix.getValue());
+						solution.setDescription(txtDesc.getValue());
 											
 						SolutionPresenter presenter = new SolutionPresenter();
-						ApiRestResponse response = presenter.createNewSolution(solutionModel);
+						ApiRestResponse response = presenter.createNewSolution(solution);
 						if(!response.getIsSuccess()) {
 							
 							Notification.show(response.getErrorMessage());
@@ -373,6 +376,11 @@ public class NewSolutionView extends HorizontalLayout{
 							txtPrefix.clear();
 							txtDesc.clear();
 							
+							ObjectMapper objectMapper = new ObjectMapper();
+							objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+							SolutionModel solutionModel = objectMapper.readValue(response.getData().toString(), new TypeReference<SolutionModel>(){});
+
+							ScreenFactory.getInstance().solutionDetailView.setData(solutionModel);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);
 							
