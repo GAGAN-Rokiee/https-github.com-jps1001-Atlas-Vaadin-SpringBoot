@@ -11,7 +11,6 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,6 +23,7 @@ import it.besolution.model.Solution;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.utils.CommonUtils;
 import it.besolution.utils.CustomIcon;
+import it.besolution.utils.ScreenFactory;
 
 public class NewSolutionView extends HorizontalLayout{
 
@@ -43,6 +43,7 @@ public class NewSolutionView extends HorizontalLayout{
 
 	private Icon IcoChkBxInfoChecked = null;
 	private Icon IcoChkBxInfoUnChecked  = null;
+
 
 	public NewSolutionView() {
 
@@ -103,7 +104,7 @@ public class NewSolutionView extends HorizontalLayout{
 
 			hLayoutTemp.add(IcoChkBxTempUnChecked,IcoChkBxTempChecked,lblTemp);
 			hLayoutTemp.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-			
+
 			hLayoutInfo.add(IcoChkBxInfoChecked,IcoChkBxInfoUnChecked,lblInfo);
 			hLayoutInfo.setDefaultVerticalComponentAlignment(Alignment.CENTER);
 
@@ -156,6 +157,8 @@ public class NewSolutionView extends HorizontalLayout{
 			radioBtnGrp.setItems("Create from scratch", "Create from template");
 			radioBtnGrp.setItemEnabledProvider(item -> !"Create from template".equals(item));
 			radioBtnGrp.getChildren().forEach(radioBtn -> radioBtn.getElement().setAttribute("theme", "newSolutionRadioButton"));
+			radioBtnGrp.setRequired(true);
+			radioBtnGrp.setErrorMessage("Please select one option");
 
 			ComboBox<String> cboTemplates = new ComboBox<String>();
 			cboTemplates.setEnabled(false);
@@ -185,9 +188,13 @@ public class NewSolutionView extends HorizontalLayout{
 			btnNext.addClickListener(x -> {
 				try {
 
-					IcoChkBxTempUnChecked.setVisible(false);
-					IcoChkBxTempChecked.setVisible(true);
-					panel.setContent(vLayoytSecondForm);
+					if(!CommonUtils.isNullOrEmptyString(radioBtnGrp.getValue())) {
+						IcoChkBxTempUnChecked.setVisible(false);
+						IcoChkBxTempChecked.setVisible(true);
+						panel.setContent(vLayoytSecondForm);
+					}else {
+						radioBtnGrp.setInvalid(true);
+					}
 
 
 				} catch (Exception e) {
@@ -208,7 +215,6 @@ public class NewSolutionView extends HorizontalLayout{
 
 	}
 
-
 	private void createNewSolutionForm(){
 
 
@@ -226,7 +232,7 @@ public class NewSolutionView extends HorizontalLayout{
 			txtName.setMaxLength(64);
 			txtName.setRequired(true);
 			txtName.setErrorMessage("Name is required");
-
+			
 			TextField txtPrefix = new TextField("Prefix");
 			txtPrefix.setWidth("50%");
 			txtPrefix.setRequired(true);
@@ -239,6 +245,68 @@ public class NewSolutionView extends HorizontalLayout{
 			txtDesc.setHeight("20%");
 			txtDesc.setRequired(true);
 			txtDesc.setMaxLength(500);
+			txtDesc.setErrorMessage("Description is required");
+			
+			txtName.addValueChangeListener(e -> {
+				try {
+					
+					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
+						
+						IcoChkBxInfoUnChecked.setVisible(false);
+						IcoChkBxInfoChecked.setVisible(true);
+						
+					}else {
+						
+						IcoChkBxInfoChecked.setVisible(false);
+						IcoChkBxInfoUnChecked.setVisible(true);
+						
+					}
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
+				}
+			});
+
+			
+			txtPrefix.addValueChangeListener(e -> {
+				try {
+					
+					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
+						
+						IcoChkBxInfoUnChecked.setVisible(false);
+						IcoChkBxInfoChecked.setVisible(true);
+						
+					}else {
+						
+						IcoChkBxInfoChecked.setVisible(false);
+						IcoChkBxInfoUnChecked.setVisible(true);
+					}
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
+				}
+			});
+
+			
+			txtDesc.addValueChangeListener(e -> {
+				try {
+					
+					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
+						
+						IcoChkBxInfoUnChecked.setVisible(false);
+						IcoChkBxInfoChecked.setVisible(true);
+						
+					}else {
+						
+						IcoChkBxInfoChecked.setVisible(false);
+						IcoChkBxInfoUnChecked.setVisible(true);
+					}
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
+				}
+			});
+
 
 			HorizontalLayout hLayoutFooter = new HorizontalLayout();
 			hLayoutFooter.getStyle().set("margin-top", "auto");
@@ -266,6 +334,8 @@ public class NewSolutionView extends HorizontalLayout{
 			btnBack.addClickListener(x -> {
 				try {
 
+					IcoChkBxTempChecked.setVisible(false);
+					IcoChkBxTempUnChecked.setVisible(true);
 					panel.setContent(vLayoytFirstForm);
 
 				} catch (Exception e) {
@@ -279,26 +349,41 @@ public class NewSolutionView extends HorizontalLayout{
 			btnCreate.addClickListener(x -> {
 				try {
 
-					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue())) {
+					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
+						
+						IcoChkBxInfoUnChecked.setVisible(false);
+						IcoChkBxInfoChecked.setVisible(true);
+						
 						Solution solutionModel = new Solution();
 						solutionModel.setTemplateName(txtName.getValue());
 						solutionModel.setPrefix(txtPrefix.getValue());
 						solutionModel.setDescription(txtDesc.getValue());
-
+											
 						SolutionPresenter presenter = new SolutionPresenter();
 						ApiRestResponse response = presenter.createNewSolution(solutionModel);
 						if(!response.getIsSuccess()) {
+							
 							Notification.show(response.getErrorMessage());
+							
+							IcoChkBxInfoChecked.setVisible(false);
+							IcoChkBxInfoUnChecked.setVisible(true);
+							
 						}else {
 							txtName.clear();
 							txtPrefix.clear();
 							txtDesc.clear();
-							Notification.show("New Solution Has Been Created",1500,Position.TOP_CENTER);
+							
+							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
+							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);
+							
 						}
 					}else if(CommonUtils.isNullOrEmptyString(txtName.getValue())) {
 						txtName.setInvalid(true);
 					}else if(CommonUtils.isNullOrEmptyString(txtPrefix.getValue())) {
 						txtPrefix.setInvalid(true);
+					}
+					else if(CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
+						txtDesc.setInvalid(true);
 					}
 
 				} catch (Exception e) {

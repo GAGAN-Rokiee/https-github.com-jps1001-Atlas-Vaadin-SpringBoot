@@ -20,5 +20,8 @@ public class SolutionModel {
 	private String lastUpdated;
 
 	private String status;
+	
+	private String prefix;
+	
 }
 
