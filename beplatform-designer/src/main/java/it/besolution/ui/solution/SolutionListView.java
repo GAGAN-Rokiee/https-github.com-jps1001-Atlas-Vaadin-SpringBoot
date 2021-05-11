@@ -13,8 +13,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.ui.HomeView;
+import it.besolution.utils.Constants;
 import it.besolution.utils.ScreenFactory;
 
 
@@ -116,6 +118,7 @@ public class SolutionListView extends VerticalLayout {
 					vLayoutTemplate.addClickListener(event -> {
 						try {
 
+							VaadinSession.getCurrent().setAttribute(Constants.SOLUTION_MODEL, solution);
 							ScreenFactory.getInstance().solutionDetailView.setData(solution);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);

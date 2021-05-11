@@ -12,5 +12,6 @@ spring:
       settings:
         web-allow-others: true
 server:
+  port: 8080
   servlet:
     context-path: /designer

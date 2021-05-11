@@ -1,0 +1,89 @@
+package it.besolution.ui.objectclass;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.web.client.RestTemplate;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.server.VaadinSession;
+
+import it.besolution.api.ObjectClassApi;
+import it.besolution.rest.ApiRestResponse;
+import it.besolution.ui.solution.SolutionModel;
+import it.besolution.utils.Constants;
+
+public class ObjectClassPresenter {
+
+	private static final Logger LOG = LoggerFactory.getLogger(ObjectClassPresenter.class);
+
+	public ArrayList<ObjectClassModel> getObjectClasses() {
+		ArrayList<ObjectClassModel> listOfSolutions = null;
+
+		try {
+
+			listOfSolutions = new ArrayList<ObjectClassModel>();
+			SolutionModel solutionModel = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
+
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("solutionId", solutionModel.getId());
+
+			RestTemplate restTemplate = new RestTemplate();
+			String objects  = restTemplate.getForObject(ObjectClassApi.API_OBJECT_CLASS_GET,String.class,params);
+
+			JSONObject obj = new  JSONObject(objects);
+			JSONArray data = obj.getJSONArray("data");
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			listOfSolutions = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<ObjectClassModel>>(){});
+
+
+		} catch (Exception e) {
+			LOG.error("Error: {}", e.getMessage());
+		 
+		}
+		return listOfSolutions;
+	}
+
+	public ApiRestResponse  createNewObjectClass(ObjectClassModel newObject) {
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			HttpEntity<ObjectClassModel> entity = new HttpEntity<ObjectClassModel>(newObject,headers);
+
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("solutionId", newObject.getSolutionId());
+
+			String response = restTemplate.exchange(ObjectClassApi.API_OBJECT_CLASS_NEW, HttpMethod.POST, entity, String.class,params).getBody();
+
+			JSONObject obj = new  JSONObject(response);
+
+			ApiRestResponse restResponse = new ApiRestResponse();
+			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
+			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
+			restResponse.setData(obj.get("data"));
+
+			return restResponse;
+		}
+		catch (Exception e) {
+			LOG.error("Error: {}", e.getMessage());
+		 
+
+		}
+		return null;
+	}
+
+}

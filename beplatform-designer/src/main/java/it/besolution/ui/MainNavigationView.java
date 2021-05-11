@@ -13,6 +13,7 @@ import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import it.besolution.utils.CustomIcon;
+import it.besolution.utils.ScreenFactory;
 
 public class MainNavigationView extends HorizontalLayout {
 
@@ -79,6 +80,16 @@ public class MainNavigationView extends HorizontalLayout {
 			
 			Button btnObj= new Button("Object classes");
 			btnObj.addClassName("btnNav");
+			btnObj.addClickListener(event -> {
+				try {
+					
+					ScreenFactory.getInstance().objectClassGridView.populateDate();
+					changeContent(ScreenFactory.getInstance().objectClassGridView);
+					
+				} catch (Exception e) {
+					LOG.error("Error: {}", e.getMessage());
+				}
+			});
 			
 			Button btnProp= new Button("Property definatons");
 			btnProp.addClassName("btnNav");
