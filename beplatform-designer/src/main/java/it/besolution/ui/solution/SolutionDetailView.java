@@ -181,7 +181,7 @@ public class SolutionDetailView extends VerticalLayout{
 	public void setData(SolutionModel solution) {
 		try {
 			
-			lblID.setText(solution.getId());
+			lblID.setText(String.valueOf(solution.getId()));
 			lblPrefix.setText(solution.getPrefix());
 			
 			lblName.setText(solution.getTemplateName());

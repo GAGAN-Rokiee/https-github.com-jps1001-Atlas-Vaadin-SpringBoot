@@ -21,10 +21,12 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.model.Solution;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.utils.CommonUtils;
+import it.besolution.utils.Constants;
 import it.besolution.utils.CustomIcon;
 import it.besolution.utils.ScreenFactory;
 
@@ -380,6 +382,7 @@ public class NewSolutionView extends HorizontalLayout{
 							objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 							SolutionModel solutionModel = objectMapper.readValue(response.getData().toString(), new TypeReference<SolutionModel>(){});
 
+							VaadinSession.getCurrent().setAttribute(Constants.SOLUTION_MODEL, solutionModel);
 							ScreenFactory.getInstance().solutionDetailView.setData(solutionModel);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);

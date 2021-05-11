@@ -80,6 +80,8 @@ public class MainView extends VerticalLayout{
 			ScreenFactory.getInstance().getScreen(4);
 			ScreenFactory.getInstance().getScreen(5);
 			ScreenFactory.getInstance().getScreen(6);
+			ScreenFactory.getInstance().getScreen(7);
+			ScreenFactory.getInstance().getScreen(8);
 
 		} catch (Exception e) {
 			LOG.error("Error: {}", e.getMessage());

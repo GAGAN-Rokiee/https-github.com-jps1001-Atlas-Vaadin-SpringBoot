@@ -12,8 +12,6 @@ spring:
       settings:
         web-allow-others: true
 server:
+  port: 8080
   servlet:
     context-path: /designer
-
-api-solution-get-all: http://localhost:8080/designer/api/solution/all
-api-solution-new: http://localhost:8080/designer/api/solution/save    
