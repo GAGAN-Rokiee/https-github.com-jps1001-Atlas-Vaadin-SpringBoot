@@ -3,9 +3,6 @@ package it.besolution.ui.objectclass;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -15,6 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.ScreenFactory;
 
 public class ObjectClassGridView extends HorizontalLayout{
@@ -23,9 +21,6 @@ public class ObjectClassGridView extends HorizontalLayout{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectClassGridView.class);
-
 
 	Grid<ObjectClassModel> gridObjects = null;
 
@@ -42,7 +37,8 @@ public class ObjectClassGridView extends HorizontalLayout{
 			gridObjects.setItems(listObjectClasses);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, ObjectClassGridView.class);
+
 			
 		}
 	}
@@ -69,7 +65,7 @@ public class ObjectClassGridView extends HorizontalLayout{
 					ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().objectClassFormView);
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, ObjectClassGridView.class);
 				}
 			});
 
@@ -98,7 +94,7 @@ public class ObjectClassGridView extends HorizontalLayout{
 
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+				
 		
 		}
 

@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class ObjectClassModel {
 
-	private String basePath;
+	private String basePath = "";
 	private int baseType;
 	private String className;
 	
@@ -20,7 +20,7 @@ public class ObjectClassModel {
 	
 	private String counterName;
 	
-	private boolean cryptoContent;
+	private boolean cryptoContent = false;
 	private String cryptoContentDesc;
 	
 	private String defaultWorkflow;

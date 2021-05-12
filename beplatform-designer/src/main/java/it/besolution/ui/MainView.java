@@ -2,9 +2,6 @@ package it.besolution.ui;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Label;
@@ -23,6 +20,7 @@ import com.vaadin.flow.theme.material.Material;
 
 import it.besolution.ui.solution.SolutionModel;
 import it.besolution.ui.solution.SolutionPresenter;
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.Constants;
 import it.besolution.utils.CustomIcon;
 import it.besolution.utils.ScreenFactory;
@@ -48,9 +46,6 @@ public class MainView extends VerticalLayout{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
-
 
 	private Scroller panel = null;
 	private Icon icoMenu = null;
@@ -84,7 +79,7 @@ public class MainView extends VerticalLayout{
 			ScreenFactory.getInstance().getScreen(8);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, MainView.class);
 		}
 
 	}
@@ -101,7 +96,7 @@ public class MainView extends VerticalLayout{
 
 				icoMenu.setVisible(true);
 				icoSettings.setVisible(true);
-				
+
 				ScreenFactory.getInstance().solutionListView.addTemplates(solutionList);
 
 				panel.setContent(ScreenFactory.getInstance().solutionListView);
@@ -114,7 +109,8 @@ public class MainView extends VerticalLayout{
 			add(panel);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, MainView.class);
+
 
 		}
 
@@ -138,17 +134,18 @@ public class MainView extends VerticalLayout{
 			icoMenu.setColor("white");
 			icoMenu.setVisible(false);
 			icoMenu.getStyle().set("cursor", "pointer");
-			
+
 			icoMenu.addClickListener(event -> {
 				try {
-					
+
 					List<SolutionModel>  solutionList = new SolutionPresenter().getSolutions();
-					
+
 					ScreenFactory.getInstance().solutionListView.addTemplates(solutionList);
 					panel.setContent(ScreenFactory.getInstance().solutionListView);
-					
+
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, MainView.class);
+
 				}
 			});
 
@@ -166,7 +163,7 @@ public class MainView extends VerticalLayout{
 			add(headerLayout);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, MainView.class);
 		}
 
 	}
@@ -175,7 +172,8 @@ public class MainView extends VerticalLayout{
 		try {
 			panel.setContent(content);
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, MainView.class);
+
 		}
 	}
 }

@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,11 +20,11 @@ import com.vaadin.flow.server.VaadinSession;
 import it.besolution.api.ObjectClassApi;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.ui.solution.SolutionModel;
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.Constants;
 
 public class ObjectClassPresenter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectClassPresenter.class);
 
 	public ArrayList<ObjectClassModel> getObjectClasses() {
 		ArrayList<ObjectClassModel> listOfSolutions = null;
@@ -51,8 +49,9 @@ public class ObjectClassPresenter {
 
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
-		 
+			CommonUtils.printStakeTrace(e, ObjectClassPresenter.class);
+
+
 		}
 		return listOfSolutions;
 	}
@@ -79,8 +78,7 @@ public class ObjectClassPresenter {
 			return restResponse;
 		}
 		catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
-		 
+			CommonUtils.printStakeTrace(e, ObjectClassPresenter.class);
 
 		}
 		return null;

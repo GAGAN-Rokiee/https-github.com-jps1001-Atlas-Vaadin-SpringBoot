@@ -54,5 +54,9 @@
 .btnNav{
 	background: transparent;
 	color: white;
-	margin: 0px;
+	margin: 0rem 0rem 0rem 2rem;
+}
+.lblError{
+	color: red;
+	font-size: 14px;
 }
