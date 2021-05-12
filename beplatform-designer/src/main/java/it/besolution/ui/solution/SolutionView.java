@@ -2,9 +2,6 @@ package it.besolution.ui.solution;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
@@ -14,7 +11,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import it.besolution.ui.HomeView;
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.ScreenFactory;
 
 
@@ -25,7 +22,6 @@ public class SolutionView extends VerticalLayout {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private static final Logger LOG = LoggerFactory.getLogger(HomeView.class);
 	
 	private HorizontalLayout hLayoutTemplates = null;
 	
@@ -60,7 +56,7 @@ public class SolutionView extends VerticalLayout {
 					ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().newSolutionView);
 					
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, SolutionView.class);
 				}
 			});
 			
@@ -72,7 +68,7 @@ public class SolutionView extends VerticalLayout {
 
 			add(hLayoutHeader);
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionView.class);
 		}
 
 
@@ -96,7 +92,7 @@ public class SolutionView extends VerticalLayout {
 			add(scroller);
 			setHorizontalComponentAlignment(Alignment.CENTER, scroller);
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionView.class);
 		}
 	}
 	
@@ -125,7 +121,7 @@ public class SolutionView extends VerticalLayout {
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionView.class);
 		}
 	}
 

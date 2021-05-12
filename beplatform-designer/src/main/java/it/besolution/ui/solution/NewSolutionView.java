@@ -1,11 +1,9 @@
 package it.besolution.ui.solution;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -37,7 +35,6 @@ public class NewSolutionView extends HorizontalLayout{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private static final Logger LOG = LoggerFactory.getLogger(NewSolutionView.class);
 
 	private Scroller panel = null;
 	private VerticalLayout vLayoytFirstForm  = null;
@@ -117,7 +114,7 @@ public class NewSolutionView extends HorizontalLayout{
 			vLayoytMenu.add(heading,hLayoutTemp,hLayoutInfo);
 			add(vLayoytMenu);
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, NewSolutionView.class);
 
 		}
 
@@ -134,7 +131,7 @@ public class NewSolutionView extends HorizontalLayout{
 			add(panel);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, NewSolutionView.class);
 
 		}
 
@@ -181,9 +178,24 @@ public class NewSolutionView extends HorizontalLayout{
 			btnCancel.addClickListener(x -> {
 				try {
 
+					UI.getCurrent().getPage().reload();
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+				}
+			});
+			
+			Button btnReset= new Button("Reset");
+			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+			btnReset.addClickListener(x -> {
+				try {
+
+					radioBtnGrp.clear();
+					cboTemplates.clear();
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
 				}
 			});
 
@@ -203,17 +215,17 @@ public class NewSolutionView extends HorizontalLayout{
 
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
 				}
 			});
 
-			hLayoutFooter.add(btnCancel,btnNext);
+			hLayoutFooter.add(btnCancel,btnReset,btnNext);
 
 			vLayoytFirstForm.add(heading,title,hLayoyt,hLayoutFooter);
 
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, NewSolutionView.class);
 
 		}
 
@@ -237,7 +249,7 @@ public class NewSolutionView extends HorizontalLayout{
 			txtName.setMaxLength(64);
 			txtName.setRequired(true);
 			txtName.setErrorMessage("Name is required");
-			
+
 			TextField txtPrefix = new TextField("Prefix");
 			txtPrefix.setWidth("50%");
 			txtPrefix.setRequired(true);
@@ -251,64 +263,66 @@ public class NewSolutionView extends HorizontalLayout{
 			txtDesc.setRequired(true);
 			txtDesc.setMaxLength(500);
 			txtDesc.setErrorMessage("Description is required");
-			
+
 			txtName.addValueChangeListener(e -> {
 				try {
-					
+
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-						
+
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-						
+
 					}else {
-						
+
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
-						
+
 					}
-					
-				} catch (Exception e2) {
-					LOG.error("Error: {}", e2.getMessage());
+
+				} catch (Exception exp) {
+					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
+
 				}
 			});
 
-			
+
 			txtPrefix.addValueChangeListener(e -> {
 				try {
-					
+
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-						
+
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-						
+
 					}else {
-						
+
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
 					}
-					
-				} catch (Exception e2) {
-					LOG.error("Error: {}", e2.getMessage());
+
+				} catch (Exception exp) {
+					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
+
 				}
 			});
 
-			
+
 			txtDesc.addValueChangeListener(e -> {
 				try {
-					
+
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-						
+
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-						
+
 					}else {
-						
+
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
 					}
-					
-				} catch (Exception e2) {
-					LOG.error("Error: {}", e2.getMessage());
+
+				} catch (Exception exp) {
+					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
 				}
 			});
 
@@ -316,12 +330,13 @@ public class NewSolutionView extends HorizontalLayout{
 			HorizontalLayout hLayoutFooter = new HorizontalLayout();
 			hLayoutFooter.getStyle().set("margin-top", "auto");
 			hLayoutFooter.setWidthFull();
+		
 
-			Button btnCancel= new Button("Cancel");
-			btnCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
-			btnCancel.getStyle().set("margin-right", "auto");
+			Button btnReset= new Button("Reset");
+			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+			btnReset.getStyle().set("margin-right", "auto");
 
-			btnCancel.addClickListener(x -> {
+			btnReset.addClickListener(x -> {
 				try {
 
 					txtName.clear();
@@ -329,7 +344,7 @@ public class NewSolutionView extends HorizontalLayout{
 					txtDesc.clear();
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
 				}
 			});
 
@@ -344,7 +359,7 @@ public class NewSolutionView extends HorizontalLayout{
 					panel.setContent(vLayoytFirstForm);
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
 				}
 			});
 
@@ -355,29 +370,29 @@ public class NewSolutionView extends HorizontalLayout{
 				try {
 
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-						
+
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-						
+
 						Solution solution = new Solution();
 						solution.setTemplateName(txtName.getValue());
 						solution.setPrefix(txtPrefix.getValue());
 						solution.setDescription(txtDesc.getValue());
-											
+
 						SolutionPresenter presenter = new SolutionPresenter();
 						ApiRestResponse response = presenter.createNewSolution(solution);
 						if(!response.getIsSuccess()) {
-							
+
 							Notification.show(response.getErrorMessage());
-							
+
 							IcoChkBxInfoChecked.setVisible(false);
 							IcoChkBxInfoUnChecked.setVisible(true);
-							
+
 						}else {
 							txtName.clear();
 							txtPrefix.clear();
 							txtDesc.clear();
-							
+
 							ObjectMapper objectMapper = new ObjectMapper();
 							objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 							SolutionModel solutionModel = objectMapper.readValue(response.getData().toString(), new TypeReference<SolutionModel>(){});
@@ -386,7 +401,7 @@ public class NewSolutionView extends HorizontalLayout{
 							ScreenFactory.getInstance().solutionDetailView.setData(solutionModel);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);
-							
+
 						}
 					}else if(CommonUtils.isNullOrEmptyString(txtName.getValue())) {
 						txtName.setInvalid(true);
@@ -398,17 +413,17 @@ public class NewSolutionView extends HorizontalLayout{
 					}
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
 				}
 			});
 
-			hLayoutFooter.add(btnCancel,btnBack,btnCreate);
+			hLayoutFooter.add(btnReset,btnBack,btnCreate);
 
 			vLayoytSecondForm.add(heading,txtName,txtPrefix,txtDesc,hLayoutFooter);
 
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, NewSolutionView.class);
 
 		}
 

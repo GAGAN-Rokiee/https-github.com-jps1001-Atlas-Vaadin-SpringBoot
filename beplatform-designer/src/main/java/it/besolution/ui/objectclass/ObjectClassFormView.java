@@ -2,9 +2,6 @@ package it.besolution.ui.objectclass;
 
 import java.util.HashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -20,7 +17,9 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.rest.ApiRestResponse;
+import it.besolution.ui.solution.NewSolutionView;
 import it.besolution.ui.solution.SolutionModel;
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.Constants;
 import it.besolution.utils.ScreenFactory;
 
@@ -30,9 +29,10 @@ public class ObjectClassFormView extends VerticalLayout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectClassFormView.class);
 
 	private Binder<ObjectClassModel> binder = null;
+	private Label lblBasePathError = null;
+	private Label lblCryptoError = null;
 
 	public ObjectClassFormView() {
 
@@ -114,11 +114,25 @@ public class ObjectClassFormView extends VerticalLayout {
 			radioBtnGrpContent.getChildren().forEach(radioBtn -> radioBtn.getElement().setAttribute("theme", "objectFormRadioButton"));
 			binder.forField(radioBtnGrpContent).asRequired("Please select one option").bind("hasContentDesc");
 
+
 			vLayoutRadioBtnGrpContent.add(lblHasContent,radioBtnGrpContent);
+
+			VerticalLayout vLayoutBasePath = new VerticalLayout();
+			vLayoutBasePath.setWidthFull();
+			vLayoutBasePath.setPadding(false);
+			vLayoutBasePath.setMargin(false);
+			vLayoutBasePath.setSpacing(false);
 
 			TextField txtBasePath = new TextField("Base Path");
 			txtBasePath.setWidth("40%");
-			binder.forField(txtBasePath).asRequired("Base Path is required").bind("basePath");
+			txtBasePath.setEnabled(false);
+			binder.forField(txtBasePath).bind("basePath");
+
+			lblBasePathError = new Label("Base Path is required");
+			lblBasePathError.addClassName("lblError");
+			lblBasePathError.setVisible(false);
+
+			vLayoutBasePath.add(txtBasePath,lblBasePathError);
 
 			VerticalLayout vLayoutRadioBtnGrpCrypto = new VerticalLayout();
 			vLayoutRadioBtnGrpCrypto.setWidthFull();
@@ -131,9 +145,31 @@ public class ObjectClassFormView extends VerticalLayout {
 			RadioButtonGroup<String> radioBtnGrpCrypto = new RadioButtonGroup<String>();
 			radioBtnGrpCrypto.setItems(mapTrueFalse.keySet());
 			radioBtnGrpCrypto.getChildren().forEach(radioBtn -> radioBtn.getElement().setAttribute("theme", "objectFormRadioButton"));
-			binder.forField(radioBtnGrpCrypto).asRequired("Please select one option").bind("cryptoContentDesc");
+			radioBtnGrpCrypto.setEnabled(false);
+			binder.forField(radioBtnGrpCrypto).bind("cryptoContentDesc");
 
-			vLayoutRadioBtnGrpCrypto.add(lblCrypto,radioBtnGrpCrypto);
+			lblCryptoError = new Label("Please select one option");
+			lblCryptoError.addClassName("lblError");
+			lblCryptoError.setVisible(false);
+
+			vLayoutRadioBtnGrpCrypto.add(lblCrypto,radioBtnGrpCrypto,lblCryptoError);
+
+			radioBtnGrpContent.addValueChangeListener(x -> {
+				try {
+					if("True".equalsIgnoreCase(x.getValue())) {
+						txtBasePath.setEnabled(true);
+						radioBtnGrpCrypto.setEnabled(true);
+
+					}else {
+						txtBasePath.clear();
+						radioBtnGrpCrypto.clear();
+						txtBasePath.setEnabled(false);
+						radioBtnGrpCrypto.setEnabled(false);
+					}
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, ObjectClassFormView.class);
+				}
+			});
 
 			H2 headingAdvance = new H2("Advanced Options");
 
@@ -168,12 +204,26 @@ public class ObjectClassFormView extends VerticalLayout {
 			btnCancel.addClickListener(x -> {
 				try {
 
-					binder.setBean(new ObjectClassModel());
+					ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().objectClassGridView);
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, ObjectClassFormView.class);
 				}
 			});
+
+			Button btnReset= new Button("Reset");
+			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+
+			btnReset.addClickListener(x -> {
+				try {
+
+					resetForm();
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+				}
+			});
+
 
 
 			Button btnCreate  = new Button("Create");
@@ -184,39 +234,68 @@ public class ObjectClassFormView extends VerticalLayout {
 
 					if(binder.validate().isOk()) {
 
+						lblBasePathError.setVisible(false);
+						lblCryptoError.setVisible(false);
+
 						SolutionModel solution = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
 
 						binder.getBean().setSolutionId(solution.getId());
 						binder.getBean().setClassType(mapType.get(binder.getBean().getClassTypeDesc()));
 						binder.getBean().setSecurityEnabled(mapTrueFalse.get(binder.getBean().getSecurityEnabledDesc()));
 						binder.getBean().setHasContent(mapTrueFalse.get(binder.getBean().getHasContentDesc()));
-						binder.getBean().setCryptoContent(mapTrueFalse.get(binder.getBean().getCryptoContentDesc()));
 						binder.getBean().setSystemClass(mapTrueFalse.get(binder.getBean().getSystemClassDesc()));
 
-						ApiRestResponse response = new ObjectClassPresenter().createNewObjectClass(binder.getBean());
+						if("True".equalsIgnoreCase(radioBtnGrpContent.getValue())) {
+							if(!txtBasePath.isEmpty() && !radioBtnGrpCrypto.isEmpty()) {
+								binder.getBean().setCryptoContent(mapTrueFalse.get(binder.getBean().getCryptoContentDesc()));
+								ApiRestResponse response = new ObjectClassPresenter().createNewObjectClass(binder.getBean());
+								if(!response.getIsSuccess()) {
 
-						if(!response.getIsSuccess()) {
+									Notification.show(response.getErrorMessage());
 
-							Notification.show(response.getErrorMessage());
-							
+								}else {
+
+									resetForm();
+									ScreenFactory.getInstance().objectClassGridView.populateDate();
+									ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().objectClassGridView);
+								}
+
+							}
+							else if(txtBasePath.isEmpty()) {
+
+								lblBasePathError.setVisible(true);
+
+							}else if(radioBtnGrpCrypto.isEmpty()) {
+								lblCryptoError.setVisible(true);
+							}
 						}else {
-							
-							resetForm();
-							ScreenFactory.getInstance().objectClassGridView.populateDate();
-							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().objectClassGridView);
+							ApiRestResponse response = new ObjectClassPresenter().createNewObjectClass(binder.getBean());
+							if(!response.getIsSuccess()) {
+
+								Notification.show(response.getErrorMessage());
+
+							}else {
+
+								resetForm();
+								ScreenFactory.getInstance().objectClassGridView.populateDate();
+								ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().objectClassGridView);
+							}
+
 						}
+
+
 
 					}
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
-					 
+					CommonUtils.printStakeTrace(e, ObjectClassFormView.class);
+
 				}
 			});
 
-			hLayoutFooter.add(btnCancel,btnCreate);
+			hLayoutFooter.add(btnCancel,btnReset,btnCreate);
 
-			vLayoutForm.add(heading,txtName,txtDesc,cboType,txtEntityName,cboCounter,vLayoutRadioBtnGrpSecurity,headingStorage,vLayoutRadioBtnGrpContent,txtBasePath,vLayoutRadioBtnGrpCrypto,headingAdvance,vLayoutRadioBtnGrpSystem,cboWorkflow,hLayoutFooter);
+			vLayoutForm.add(heading,txtName,txtDesc,cboType,txtEntityName,cboCounter,vLayoutRadioBtnGrpSecurity,headingStorage,vLayoutRadioBtnGrpContent,vLayoutBasePath,vLayoutRadioBtnGrpCrypto,headingAdvance,vLayoutRadioBtnGrpSystem,cboWorkflow,hLayoutFooter);
 
 			binder.bindInstanceFields(this);
 			binder.setBean(new ObjectClassModel());
@@ -224,8 +303,8 @@ public class ObjectClassFormView extends VerticalLayout {
 			add(vLayoutForm);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
-			 
+			CommonUtils.printStakeTrace(e, ObjectClassFormView.class);
+
 		}
 
 	}
@@ -233,10 +312,12 @@ public class ObjectClassFormView extends VerticalLayout {
 	public void resetForm() {
 		try {
 
+			lblBasePathError.setVisible(false);
+			lblCryptoError.setVisible(false);
 			binder.setBean(new ObjectClassModel());
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, ObjectClassFormView.class);
 		}
 	}
 }

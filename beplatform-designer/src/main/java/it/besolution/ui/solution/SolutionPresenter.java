@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,11 +18,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import it.besolution.api.SolutionApi;
 import it.besolution.model.Solution;
 import it.besolution.rest.ApiRestResponse;
+import it.besolution.utils.CommonUtils;
 
 public class SolutionPresenter {
-
-	private static final Logger LOG = LoggerFactory.getLogger(SolutionPresenter.class);
-
+	
 	public List<SolutionModel> getSolutions() {
 		try {
 			RestTemplate restTemplate = new RestTemplate();
@@ -39,7 +36,7 @@ public class SolutionPresenter {
 
 			return listOfSolutions;
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionPresenter.class);
 		}
 		return null;
 	}
@@ -64,8 +61,7 @@ public class SolutionPresenter {
 			return restResponse;
 		}
 		catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
-			
+			CommonUtils.printStakeTrace(e, SolutionPresenter.class);
 		}
 		return null;
 	}
