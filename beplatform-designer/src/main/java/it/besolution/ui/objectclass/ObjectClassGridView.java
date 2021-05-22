@@ -57,7 +57,7 @@ public class ObjectClassGridView extends HorizontalLayout{
 
 			Button btnNew = new Button("New");
 			btnNew.setIcon(VaadinIcon.PLUS.create());
-			btnNew.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnNew.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 			btnNew.addClickListener(event ->{
 				try {
 

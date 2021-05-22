@@ -10,6 +10,8 @@ import it.besolution.ui.objectclass.ObjectClassGridView;
 import it.besolution.ui.solution.NewSolutionView;
 import it.besolution.ui.solution.SolutionDetailView;
 import it.besolution.ui.solution.SolutionListView;
+import it.besolution.ui.workflow.WorkflowTabsView;
+import it.besolution.ui.workflow.WorkflowView;
 
 public class ScreenFactory {
 
@@ -33,6 +35,8 @@ public class ScreenFactory {
 	public SolutionDetailView solutionDetailView = null;
 	public ObjectClassGridView objectClassGridView = null;
 	public ObjectClassFormView objectClassFormView = null;
+	public WorkflowView workflowView = null;
+	public WorkflowTabsView workflowTabsView = null;
 	
 	public Object getScreen(int screenId) {
 
@@ -77,7 +81,16 @@ public class ScreenFactory {
 				objectClassFormView =  new ObjectClassFormView();
 			}
 			return objectClassFormView;	
-
+		case 9:
+			if(null == workflowView) {
+				workflowView =  new WorkflowView();
+			}
+			return workflowView;	
+		case 10:
+			if(null == workflowTabsView) {
+				workflowTabsView =  new WorkflowTabsView();
+			}
+			return workflowTabsView;	
 
 		default:
 			return null;

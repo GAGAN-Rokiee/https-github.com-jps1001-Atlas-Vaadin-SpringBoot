@@ -150,7 +150,7 @@ public class NewSolutionView extends HorizontalLayout{
 
 			H1 heading = new H1("Template");
 
-			H2 title = new H2("Choose a template or create a new solution from scracth");
+			H2 title = new H2("Choose a template or create a new solution from scratch");
 
 			HorizontalLayout hLayoyt = new HorizontalLayout();
 
@@ -173,7 +173,7 @@ public class NewSolutionView extends HorizontalLayout{
 			hLayoutFooter.getStyle().set("margin-left", "auto");
 
 			Button btnCancel= new Button("Cancel");
-			btnCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+			btnCancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
 			btnCancel.addClickListener(x -> {
 				try {
@@ -186,7 +186,6 @@ public class NewSolutionView extends HorizontalLayout{
 			});
 			
 			Button btnReset= new Button("Reset");
-			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 			btnReset.addClickListener(x -> {
 				try {
@@ -200,7 +199,7 @@ public class NewSolutionView extends HorizontalLayout{
 			});
 
 			Button btnNext  = new Button("Next");
-			btnNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnNext.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			btnNext.addClickListener(x -> {
 				try {
@@ -333,7 +332,6 @@ public class NewSolutionView extends HorizontalLayout{
 		
 
 			Button btnReset= new Button("Reset");
-			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 			btnReset.getStyle().set("margin-right", "auto");
 
 			btnReset.addClickListener(x -> {
@@ -349,7 +347,7 @@ public class NewSolutionView extends HorizontalLayout{
 			});
 
 			Button btnBack= new Button("Back");
-			btnBack.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+			btnBack.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
 			btnBack.addClickListener(x -> {
 				try {
@@ -364,7 +362,7 @@ public class NewSolutionView extends HorizontalLayout{
 			});
 
 			Button btnCreate  = new Button("Create");
-			btnCreate.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnCreate.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			btnCreate.addClickListener(x -> {
 				try {

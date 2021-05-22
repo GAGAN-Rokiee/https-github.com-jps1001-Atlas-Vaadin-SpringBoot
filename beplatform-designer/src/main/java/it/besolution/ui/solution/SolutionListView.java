@@ -49,7 +49,7 @@ public class SolutionListView extends VerticalLayout {
 
 			Button btnNew = new Button("New");
 			btnNew.setIcon(VaadinIcon.PLUS.create());
-			btnNew.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnNew.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			btnNew.addClickListener(x -> {
 				try {
@@ -63,7 +63,6 @@ public class SolutionListView extends VerticalLayout {
 
 			Button btnImport  = new Button("Import");
 			btnImport.setIcon(VaadinIcon.ADD_DOCK.create());
-			btnImport.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 			hLayoutHeader.add(lblPageTitle,btnNew,btnImport);
 

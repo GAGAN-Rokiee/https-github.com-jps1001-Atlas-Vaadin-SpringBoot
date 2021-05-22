@@ -198,7 +198,7 @@ public class ObjectClassFormView extends VerticalLayout {
 			hLayoutFooter.setWidthFull();
 
 			Button btnCancel= new Button("Cancel");
-			btnCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+			btnCancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
 			btnCancel.getStyle().set("margin-left", "auto");
 
 			btnCancel.addClickListener(x -> {
@@ -212,7 +212,6 @@ public class ObjectClassFormView extends VerticalLayout {
 			});
 
 			Button btnReset= new Button("Reset");
-			btnReset.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 			btnReset.addClickListener(x -> {
 				try {
@@ -227,7 +226,7 @@ public class ObjectClassFormView extends VerticalLayout {
 
 
 			Button btnCreate  = new Button("Create");
-			btnCreate.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnCreate.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			btnCreate.addClickListener(x -> {
 				try {
