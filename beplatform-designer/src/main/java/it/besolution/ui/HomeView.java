@@ -64,6 +64,15 @@ public class HomeView extends VerticalLayout {
 					CommonUtils.printStakeTrace(e, HomeView.class);
 				}
 			});
+			
+			vLayoutImport.addClickListener(event -> {
+				try {
+
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, HomeView.class);
+				}
+			});
 
 
 			Icon iconAdd = new Icon(VaadinIcon.PLUS);

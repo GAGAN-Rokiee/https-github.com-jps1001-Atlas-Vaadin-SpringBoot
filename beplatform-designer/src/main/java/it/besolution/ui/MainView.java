@@ -4,19 +4,15 @@ import java.util.List;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.lumo.Lumo;
-import com.vaadin.flow.theme.material.Material;
 
 import it.besolution.ui.solution.SolutionModel;
 import it.besolution.ui.solution.SolutionPresenter;
@@ -31,15 +27,13 @@ import it.besolution.utils.ScreenFactory;
 
 
 
-@PWA(name = "atlas",shortName = "atlas", enableInstallPrompt = false)
-@Viewport("width=device-width, minimum-scale=1.0, initial-scale=1.0")
-@Theme(value = Lumo.class, variant = Material.LIGHT)
 @PageTitle("ATLAS")
-@CssImport("./styles/customStyles.css")
+@Route("")
+@StyleSheet(value = "https://unpkg.com/bpmn-js@8.4.0/dist/assets/diagram-js.css")
+@StyleSheet(value = "https://unpkg.com/bpmn-js@8.4.0/dist/assets/bpmn-font/css/bpmn.css")
 @CssImport(value = "./styles/radioButton.css", themeFor = "vaadin-radio-button")
 @CssImport(value = "./styles/checkbox.css", themeFor = "vaadin-checkbox")
 @CssImport(value = "./styles/contextMenuOverlay.css", themeFor = "vaadin-context-menu-overlay")
-@Route("")
 public class MainView extends VerticalLayout{
 
 	/**
@@ -77,7 +71,9 @@ public class MainView extends VerticalLayout{
 			ScreenFactory.getInstance().getScreen(6);
 			ScreenFactory.getInstance().getScreen(7);
 			ScreenFactory.getInstance().getScreen(8);
-
+			ScreenFactory.getInstance().getScreen(9);
+			ScreenFactory.getInstance().getScreen(10);
+			
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainView.class);
 		}

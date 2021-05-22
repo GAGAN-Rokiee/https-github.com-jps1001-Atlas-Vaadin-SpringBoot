@@ -50,6 +50,14 @@ public class MainNavigationView extends HorizontalLayout {
 			lblSol.addClassName("navLbl");
 
 			hLayoutSol.add(IcoSol,lblSol);
+			
+			hLayoutSol.addClickListener(x -> {
+				try {
+					panel.setContent(ScreenFactory.getInstance().solutionDetailView);
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, MainNavigationView.class);
+				}
+			});
 
 			HorizontalLayout hLayoutEnv = new HorizontalLayout();
 			hLayoutEnv.setWidthFull();
@@ -80,7 +88,7 @@ public class MainNavigationView extends HorizontalLayout {
 				try {
 
 					ScreenFactory.getInstance().objectClassGridView.populateDate();
-					changeContent(ScreenFactory.getInstance().objectClassGridView);
+					panel.setContent(ScreenFactory.getInstance().objectClassGridView);
 
 				} catch (Exception e) {
 					CommonUtils.printStakeTrace(e, MainNavigationView.class);
@@ -137,6 +145,14 @@ public class MainNavigationView extends HorizontalLayout {
 
 			HorizontalLayout hLayoutWrkFlw = new HorizontalLayout();
 			hLayoutWrkFlw.setWidthFull();
+			
+			hLayoutWrkFlw.addClickListener(x -> {
+				try {
+					panel.setContent(ScreenFactory.getInstance().workflowView);
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, MainNavigationView.class);
+				}
+			});
 
 			Icon icoWrkFlw = CustomIcon.PLAY.create();
 			icoWrkFlw.addClassName("navIco");
