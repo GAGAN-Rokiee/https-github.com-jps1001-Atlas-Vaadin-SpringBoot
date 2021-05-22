@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.dependency.CssImport;
-import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -16,6 +15,7 @@ import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.ui.solution.SolutionModel;
 import it.besolution.ui.solution.SolutionPresenter;
+import it.besolution.utils.BPMN;
 import it.besolution.utils.CommonUtils;
 import it.besolution.utils.Constants;
 import it.besolution.utils.CustomIcon;
@@ -29,8 +29,6 @@ import it.besolution.utils.ScreenFactory;
 
 @PageTitle("ATLAS")
 @Route("")
-@StyleSheet(value = "https://unpkg.com/bpmn-js@8.4.0/dist/assets/diagram-js.css")
-@StyleSheet(value = "https://unpkg.com/bpmn-js@8.4.0/dist/assets/bpmn-font/css/bpmn.css")
 @CssImport(value = "./styles/radioButton.css", themeFor = "vaadin-radio-button")
 @CssImport(value = "./styles/checkbox.css", themeFor = "vaadin-checkbox")
 @CssImport(value = "./styles/contextMenuOverlay.css", themeFor = "vaadin-context-menu-overlay")
@@ -95,7 +93,7 @@ public class MainView extends VerticalLayout{
 
 				ScreenFactory.getInstance().solutionListView.addTemplates(solutionList);
 
-				panel.setContent(ScreenFactory.getInstance().solutionListView);
+				panel.setContent(new BPMN());
 
 			}
 			else {
