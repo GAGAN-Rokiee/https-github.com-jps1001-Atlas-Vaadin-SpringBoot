@@ -35,7 +35,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while saving the solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -56,7 +56,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while all solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -77,7 +77,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while all solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -96,7 +96,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while updating the solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
+            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
         }
 
         return new ResponseEntity<>(response,

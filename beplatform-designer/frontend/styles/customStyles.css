@@ -1,0 +1,58 @@
+.buttonLayoutGreen{
+	height: 12.5rem;
+	width: 20%;
+	background: #15c15d;
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: large;
+}
+
+.buttonLayoutBlue{
+	height: 12.5rem;
+	width: 20%;
+	background: #1676f3;
+	color: white;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: large;
+}
+
+.header{
+	background: #343434;
+	
+}
+.solutionTemplate{
+	background: #15c15d;
+	color: white;
+	border-radius: 10px;
+}
+.rightNavigationLayout{
+	background: #3e3e3e;
+}
+
+.chkBxIcon{
+	background: white;
+	height: 20px;
+	width: 20px;
+	border-radius: 10px;
+}
+.lblSolutionDtl{
+	font-size: 20px;
+}
+.navIco{
+	width: 16px;
+	color: white;
+}
+.navLbl{
+	color: white;
+}
+.btnNavSol{
+	background: transparent;
+	color: white;
+}
+.btnNav{
+	background: transparent;
+	color: white;
+	margin: 0px;
+}
