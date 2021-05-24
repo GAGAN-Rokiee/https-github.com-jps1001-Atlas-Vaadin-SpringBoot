@@ -11,13 +11,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
-
 server:
-  port: ${PORT:8080}
   servlet:
     context-path: /designer
-    
-logging:
-   level:
-      org:
-        atmosphere: warn

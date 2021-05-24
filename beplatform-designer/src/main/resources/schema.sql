@@ -27,3 +27,14 @@ CREATE TABLE IF NOT EXISTS object_class
     last_updated     TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
 );
+
+
+CREATE TABLE IF NOT EXISTS counter
+(
+    id               INT AUTO_INCREMENT PRIMARY KEY,
+    solution_id      INT  NULL,
+    counter_name     VARCHAR(100) not NULL,
+    last_updated     TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
+
+)
