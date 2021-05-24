@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -679,19 +678,6 @@ public class WorkflowTabsView extends VerticalLayout{
 			TextField tfName = new TextField("Name");
 			TextField tfDescription = new TextField("Description");
 
-			Button btnCancel = new Button("Cancel");
-			btnCancel.addClickListener(eve -> {
-				try {
-
-					panel.setContent(pageInfoView);
-
-				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
-
-				}
-			});
-
-
 			Button btnReset = new Button("Reset");
 			btnReset.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
@@ -699,7 +685,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			btnSubmit.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			HorizontalLayout hLayouBtn = new HorizontalLayout();
-			hLayouBtn.add(btnCancel,btnReset,btnSubmit);
+			hLayouBtn.add(btnReset,btnSubmit);
 
 			formLayout.add(tfName,tfDescription,hLayouBtn);
 
