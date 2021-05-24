@@ -28,5 +28,9 @@ public class WorkflowModel{
 	private String dynamicProperty;
 	
 	private String creation;
+	
+	private String settingName;
+	
+	private String settingValue;
 
 }

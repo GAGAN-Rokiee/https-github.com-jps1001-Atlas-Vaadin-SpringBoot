@@ -1,45 +1,22 @@
 package it.besolution.utils;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class CommonUtils {
 
 	private CommonUtils(){}
 
+	private static Logger logger = null;
 
-	public static Properties loadPropertyFile(String configurationFilePath) throws IOException
+	public static Logger getLogger(Class<?> clazz)
 	{
-		Properties prop = null;		
-		FileInputStream fis = new FileInputStream (configurationFilePath);
-
-		prop = new Properties();
-		prop.load(fis);
-		if (fis != null)
+		if(logger == null)
 		{
-			fis.close();
+			logger = LoggerFactory.getLogger(clazz);
 		}
-		return prop;
-	}
-
-	public static String getValue(Properties prop, String keyName ) 
-	{
-		try
-		{
-			if (prop == null || prop.getProperty(keyName) == null)
-			{
-				return null;
-			}
-
-			return prop.getProperty(keyName).trim();
-		} 
-		catch(Exception exp)
-		{
-			exp.printStackTrace();
-			return "";
-		}
+		return logger;
 	}
 	
 	public static boolean isNullOrEmptyString(String string) 
@@ -57,5 +34,19 @@ public class CommonUtils {
 			return true;
 		}
 	}
-
+	
+	public static void printStakeTrace(Exception exp,Class<?> clazz)
+	{
+		
+		  StringBuffer buffer = new StringBuffer();
+		  buffer.append("\n").append("START Exception ").append(" --->");
+		  buffer.append("\n").append(exp.getMessage()); StackTraceElement[]
+		  stackTraceElement = exp.getStackTrace(); for(int i = 0; i <
+		  stackTraceElement.length; i++) {
+		  buffer.append("\n");buffer.append(stackTraceElement[i]); }
+		  buffer.append("\n");buffer.append("<--- END Exception");
+		  getLogger(clazz).error(buffer.toString());
+		  
+		 }
+	
 }

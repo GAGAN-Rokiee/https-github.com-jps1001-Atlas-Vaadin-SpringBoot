@@ -1,8 +1,5 @@
 package it.besolution.ui.solution;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.html.H2;
@@ -13,25 +10,24 @@ import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
+import it.besolution.utils.CommonUtils;
+
 public class SolutionDetailView extends VerticalLayout{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final Logger LOG = LoggerFactory.getLogger(SolutionDetailView.class);
 
-
-	
 	private Label lblID = null;
 	private Label lblPrefix = null;
-	
+
 	private Label lblName = null;
 	private Label lblDesc = null;
-	
+
 	private Label lblUpDT = null;
 	private Label lblInsDT = null;
-	
+
 	public SolutionDetailView() {
 
 		setSizeFull();
@@ -46,28 +42,28 @@ public class SolutionDetailView extends VerticalLayout{
 			vLayoutForm.setSizeFull();
 
 			HorizontalLayout hLayoutIDPrfx = new HorizontalLayout();
-			
+
 			Label lblIDCap = new Label();
 			lblIDCap.setText("ID: ");
 			lblIDCap.addClassName("lblSolutionDtl");
-			
-			
+
+
 			lblID = new Label();
 			lblID.addClassName("lblSolutionDtl");
-			
+
 			Label lblPrefixCap = new Label();
 			lblPrefixCap.setText("Prefix: ");
 			lblPrefixCap.getStyle().set("margin-left", "2rem");
 			lblPrefixCap.addClassName("lblSolutionDtl");
-			
+
 			lblPrefix = new Label();
 			lblPrefix.addClassName("lblSolutionDtl");
-			
+
 			hLayoutIDPrfx.add(lblIDCap,lblID,lblPrefixCap,lblPrefix);
-			
-			
+
+
 			HorizontalLayout hLayoutName = new HorizontalLayout();
-			
+
 			Label lblNameCap = new Label();
 			lblNameCap.setText("Name:");
 			lblNameCap.addClassName("lblSolutionDtl");
@@ -80,15 +76,15 @@ public class SolutionDetailView extends VerticalLayout{
 
 			hLayoutName.add(lblNameCap,lblName,icoNameEdit);
 			hLayoutName.setVerticalComponentAlignment(Alignment.CENTER, icoNameEdit);
-			
-			
+
+
 			VerticalLayout vLayoutDesc = new VerticalLayout();
 			vLayoutDesc.setSpacing(false);
 			vLayoutDesc.setMargin(false);
 			vLayoutDesc.setPadding(false);
-			
+
 			HorizontalLayout hLayoutDesc = new HorizontalLayout();
-			
+
 			Label hDescCap = new Label();
 			hDescCap.setText("Description: ");
 			hDescCap.addClassName("lblSolutionDtl");
@@ -98,14 +94,14 @@ public class SolutionDetailView extends VerticalLayout{
 
 			Icon icoDescEdit = new Icon(VaadinIcon.PENCIL);
 			icoDescEdit.setSize("16px");
-			
+
 			hLayoutDesc.add(hDescCap,icoDescEdit);
 			hLayoutDesc.setVerticalComponentAlignment(Alignment.CENTER, icoDescEdit);
 			vLayoutDesc.add(hLayoutDesc,lblDesc);
-			
-			
+
+
 			HorizontalLayout hLayoutUpDT = new HorizontalLayout();
-			
+
 			Label lblUpDTCap = new Label();
 			lblUpDTCap.setText("Last Update: ");
 			lblUpDTCap.addClassName("lblSolutionDtl");
@@ -115,9 +111,9 @@ public class SolutionDetailView extends VerticalLayout{
 
 
 			hLayoutUpDT.add(lblUpDTCap,lblUpDT);
-			
+
 			HorizontalLayout hLayoutInsDT = new HorizontalLayout();
-			
+
 			Label lblInsDTCap = new Label();
 			lblInsDTCap.setText("Install Update: ");
 			lblInsDTCap.addClassName("lblSolutionDtl");
@@ -127,19 +123,19 @@ public class SolutionDetailView extends VerticalLayout{
 
 
 			hLayoutInsDT.add(lblInsDTCap,lblInsDT);
-			
+
 			H2 lblInfoChange = new H2("Info & Changelog");
-			
+
 			Label lblLogs = new Label("...Markdown...");
 			lblLogs.addClassName("lblSolutionDtl");
-			
+
 			vLayoutForm.add(hLayoutIDPrfx,hLayoutName,vLayoutDesc,hLayoutUpDT,hLayoutInsDT,lblInfoChange,lblLogs);
-			
+
 
 			add(vLayoutForm);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionDetailView.class);
 
 		}
 
@@ -166,13 +162,13 @@ public class SolutionDetailView extends VerticalLayout{
 			MenuItem menuItem = menuBar.addItem(new Label("..."));
 			menuItem.getSubMenu().add(btnDelete);
 			menuBar.setThemeName("menuSolDtl");
-			
+
 			hLayoutHeader.add(lblPageTitle,btnExport,btnInstall,menuBar);
 
 			add(hLayoutHeader);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionDetailView.class);
 
 		}
 
@@ -180,21 +176,21 @@ public class SolutionDetailView extends VerticalLayout{
 
 	public void setData(SolutionModel solution) {
 		try {
-			
-			lblID.setText(solution.getId());
+
+			lblID.setText(String.valueOf(solution.getId()));
 			lblPrefix.setText(solution.getPrefix());
-			
+
 			lblName.setText(solution.getTemplateName());
-			
+
 			lblDesc.setText(solution.getDescription());
-			
+
 			lblUpDT.setText(solution.getLastUpdated());
-			
+
 			lblInsDT.setText(solution.getLastUpdated());
-			
+
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionDetailView.class);	
 
 		}
 	}

@@ -1,8 +1,5 @@
 package it.besolution.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
@@ -11,6 +8,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import it.besolution.ui.solution.NewSolutionView;
+import it.besolution.utils.CommonUtils;
 import it.besolution.utils.ScreenFactory;
 
 public class HomeView extends VerticalLayout {
@@ -19,9 +17,6 @@ public class HomeView extends VerticalLayout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
-
 
 	public HomeView() {
 
@@ -66,7 +61,16 @@ public class HomeView extends VerticalLayout {
 					ScreenFactory.getInstance().mainview.changeScreen(new NewSolutionView());
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, HomeView.class);
+				}
+			});
+			
+			vLayoutImport.addClickListener(event -> {
+				try {
+
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, HomeView.class);
 				}
 			});
 
@@ -88,7 +92,7 @@ public class HomeView extends VerticalLayout {
 			setDefaultHorizontalComponentAlignment(Alignment.CENTER);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, HomeView.class);	
 
 		}
 

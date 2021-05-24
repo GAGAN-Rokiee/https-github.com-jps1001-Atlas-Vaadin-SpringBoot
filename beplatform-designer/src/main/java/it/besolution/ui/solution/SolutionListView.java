@@ -2,9 +2,6 @@ package it.besolution.ui.solution;
 
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.H2;
@@ -13,8 +10,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.server.VaadinSession;
 
-import it.besolution.ui.HomeView;
+import it.besolution.utils.CommonUtils;
+import it.besolution.utils.Constants;
 import it.besolution.utils.ScreenFactory;
 
 
@@ -24,8 +23,6 @@ public class SolutionListView extends VerticalLayout {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(HomeView.class);
 
 	private HorizontalLayout hLayoutTemplates = null;
 
@@ -52,7 +49,7 @@ public class SolutionListView extends VerticalLayout {
 
 			Button btnNew = new Button("New");
 			btnNew.setIcon(VaadinIcon.PLUS.create());
-			btnNew.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
+			btnNew.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
 
 			btnNew.addClickListener(x -> {
 				try {
@@ -60,19 +57,18 @@ public class SolutionListView extends VerticalLayout {
 					ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().newSolutionView);
 
 				} catch (Exception e) {
-					LOG.error("Error: {}", e.getMessage());
+					CommonUtils.printStakeTrace(e, SolutionListView.class);
 				}
 			});
 
 			Button btnImport  = new Button("Import");
 			btnImport.setIcon(VaadinIcon.ADD_DOCK.create());
-			btnImport.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
 			hLayoutHeader.add(lblPageTitle,btnNew,btnImport);
 
 			add(hLayoutHeader);
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionListView.class);
 		}
 
 
@@ -95,7 +91,7 @@ public class SolutionListView extends VerticalLayout {
 			setHorizontalComponentAlignment(Alignment.CENTER, scroller);
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionListView.class);
 		}
 	}
 
@@ -116,13 +112,14 @@ public class SolutionListView extends VerticalLayout {
 					vLayoutTemplate.addClickListener(event -> {
 						try {
 
+							VaadinSession.getCurrent().setAttribute(Constants.SOLUTION_MODEL, solution);
 							ScreenFactory.getInstance().solutionDetailView.setData(solution);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);
 
 
 						} catch (Exception e) {
-							LOG.error("Error: {}", e.getMessage());
+							CommonUtils.printStakeTrace(e, SolutionListView.class);
 						}
 					});
 
@@ -140,7 +137,7 @@ public class SolutionListView extends VerticalLayout {
 			}
 
 		} catch (Exception e) {
-			LOG.error("Error: {}", e.getMessage());
+			CommonUtils.printStakeTrace(e, SolutionListView.class);
 		}
 	}
 
