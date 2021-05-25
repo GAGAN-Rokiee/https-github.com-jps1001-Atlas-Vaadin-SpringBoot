@@ -1,9 +1,7 @@
 package it.besolution.controller;
 
-import it.besolution.model.Solution;
-import it.besolution.rest.ApiRestResponse;
-import it.besolution.service.SolutionService;
-import it.besolution.utils.ResponseUtil;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import it.besolution.dto.SolutionDto;
+import it.besolution.model.Solution;
+import it.besolution.rest.ApiRestResponse;
+import it.besolution.service.SolutionService;
+import it.besolution.utils.ResponseUtil;
 
 @RestController
 @RequestMapping("/api/solution")
@@ -35,7 +37,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while saving the solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -49,14 +51,14 @@ public class SolutionController {
         ApiRestResponse response = null;
         try {
             LOG.info("Getting all solution");
-            List<Solution>  solutions= solutionService.getSolution();
+            List<SolutionDto>  solutions= solutionService.getSolution();
             response = new ApiRestResponse();
             response.setData(solutions);
             LOG.info("Getting all solution complete");
         } catch (Exception ex) {
 
             LOG.error("Error while all solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -77,7 +79,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while all solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
@@ -96,7 +98,7 @@ public class SolutionController {
         } catch (Exception ex) {
 
             LOG.error("Error while updating the solution. Error: {}", ex.getMessage());
-            response = ResponseUtil.returnApiResponse(null, ex.getMessage());
+            response = ResponseUtil.returnApiResponse(new ApiRestResponse(), ex.getMessage());
         }
 
         return new ResponseEntity<>(response,
