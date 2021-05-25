@@ -1,15 +1,18 @@
 package it.besolution.repository;
 
+import java.sql.Date;
+import java.util.List;
+
 import it.besolution.mapper.SolutionMapper;
-import it.besolution.model.Solution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Date;
-import java.util.List;
+import it.besolution.dto.SolutionDto;
+import it.besolution.mapper.SolutionDtoMapper;
+import it.besolution.model.Solution;
 
 @Repository
 public class SolutionRepository {
@@ -42,13 +45,13 @@ public class SolutionRepository {
 		return solution;
 	}
 
-	public List<Solution> getAllSolutions() throws Exception {
+	public List<SolutionDto> getAllSolutions() throws Exception {
 
 		String sql = "SELECT * FROM solutions";
 		LOG.info("Query: {}", sql);
 
 		try {
-			return jdbcTemplate.query(sql, new SolutionMapper());
+			return jdbcTemplate.query(sql, new SolutionDtoMapper());
 		} catch (Exception ex) {
 			LOG.error("Cannot fetch solution. Error :",ex);
 			throw new Exception(ex);
