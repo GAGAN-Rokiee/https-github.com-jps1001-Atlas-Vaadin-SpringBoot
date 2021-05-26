@@ -16,6 +16,7 @@ public class SolutionDtoMapper implements RowMapper<SolutionDto> {
 		solution.setTemplateName(resultSet.getString("template_name"));
 		solution.setDescription(resultSet.getString("description"));
 		solution.setLastUpdated(resultSet.getDate("last_updated"));
+		solution.setPrefix(resultSet.getString("prefix"));
 
 		return solution;
 	}

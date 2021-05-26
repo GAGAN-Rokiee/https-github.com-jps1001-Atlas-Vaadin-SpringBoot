@@ -13,7 +13,7 @@ public class WorkflowModel{
 	
 	private int id;
 
-	private String workflowName;
+	private String name;
 
 	private String lastUpdated;
 	
@@ -32,5 +32,7 @@ public class WorkflowModel{
 	private String settingName;
 	
 	private String settingValue;
+	
+	private int solutionId;
 
 }
