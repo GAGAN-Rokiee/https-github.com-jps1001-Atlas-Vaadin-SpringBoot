@@ -159,7 +159,10 @@ public class MainNavigationView extends HorizontalLayout {
 			
 			btnWrkFlw.addClickListener(x -> {
 				try {
+					
+					ScreenFactory.getInstance().workflowView.populateWorkflows();
 					panel.setContent(ScreenFactory.getInstance().workflowView);
+					
 				} catch (Exception e) {
 					CommonUtils.printStakeTrace(e, MainNavigationView.class);
 				}

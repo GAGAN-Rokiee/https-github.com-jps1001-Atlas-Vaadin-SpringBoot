@@ -27,11 +27,11 @@ public class ObjectClassPresenter {
 
 
 	public ArrayList<ObjectClassModel> getObjectClasses() {
-		ArrayList<ObjectClassModel> listOfSolutions = null;
+		ArrayList<ObjectClassModel> listOfObjectClasses = null;
 
 		try {
 
-			listOfSolutions = new ArrayList<ObjectClassModel>();
+			listOfObjectClasses = new ArrayList<ObjectClassModel>();
 			SolutionModel solutionModel = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
 
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
@@ -45,7 +45,7 @@ public class ObjectClassPresenter {
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			listOfSolutions = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<ObjectClassModel>>(){});
+			listOfObjectClasses = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<ObjectClassModel>>(){});
 
 
 		} catch (Exception e) {
@@ -53,7 +53,7 @@ public class ObjectClassPresenter {
 
 
 		}
-		return listOfSolutions;
+		return listOfObjectClasses;
 	}
 
 	public ApiRestResponse  createNewObjectClass(ObjectClassModel newObject) {

@@ -18,4 +18,6 @@ public class SolutionDto {
 	private String description;
 
 	private Date lastUpdated;
+	
+	private String prefix;
 }

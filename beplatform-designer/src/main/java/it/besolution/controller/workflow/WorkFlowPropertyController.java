@@ -50,6 +50,7 @@ public class WorkFlowPropertyController {
                                                 @PathVariable Integer workFlowId) {
 
         ApiRestResponse resp = null;
+        System.out.println("dfddssdfds>>> "+workFlowId);
 
         try {
             LOG.info("Saving all properties for workflow id: {}", workFlowId);
