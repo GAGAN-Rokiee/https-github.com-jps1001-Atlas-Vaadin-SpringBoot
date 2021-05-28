@@ -28,25 +28,11 @@ public class WorkFlowAdvancedService {
     @Value("${jar.file-path:}")
     private String jarUploadPath;
 
-    public WorkFlowAdvanced saveJarFileAndItsProperties(MultipartFile file, WorkFlowAdvanced req
+    public WorkFlowAdvanced saveJarFileAndItsProperties(WorkFlowAdvanced req
             , Integer workFlowId, Boolean isUpdate) throws Exception {
 
-        req.setJarPath(file.getOriginalFilename());
+        req.setJarPath(req.getJarPath());
         req.setWorkFlowId(workFlowId);
-
-        try {
-            LOG.info("Trying to upload jar: Name: {}", file.getOriginalFilename());
-            String uploadedPath = uploadJarToFs(file,
-                    isUpdate ? workFlowId : null,
-                    isUpdate ? req.getId() : null);
-            LOG.info("Uploaded jar: Name: {} to Path: {}", file.getOriginalFilename(), uploadedPath);
-        } catch (IOException e) {
-            LOG.error("Error while uploading jar. Try later. Error: {}", e.getMessage());
-            throw new IOException(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            LOG.error("Illegal file format. Only jars are allowed.");
-            throw new IllegalArgumentException(e.getMessage());
-        }
 
         return isUpdate
                 ? workFlowAdvancedRepository.updateJarRecord(req)

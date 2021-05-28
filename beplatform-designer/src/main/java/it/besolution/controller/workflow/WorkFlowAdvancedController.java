@@ -2,6 +2,7 @@ package it.besolution.controller.workflow;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.ApiOperation;
 import it.besolution.model.workflow.WorkFlowAdvanced;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.service.workflow.WorkFlowAdvancedService;
@@ -26,32 +27,21 @@ public class WorkFlowAdvancedController {
     @Autowired
     private WorkFlowAdvancedService workFlowAdvancedService;
 
-    @PostMapping(value = "/save-jar-properties/workflow/{workFlowId}", consumes = {
-            MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE
-    })
-    public ResponseEntity<ApiRestResponse> saveJarForWorkFlow(@RequestPart String reqString,
-                                                              @RequestParam("file") MultipartFile file,
-                                                              @PathVariable Integer workFlowId,
+    @PostMapping(value = "/save-jar-properties")
+    public ResponseEntity<ApiRestResponse> saveJarForWorkFlow(@RequestBody WorkFlowAdvanced req,
           @RequestParam(value = "isUpdate", required = false, defaultValue = "false") Boolean isUpdate) {
 
         ApiRestResponse resp = null;
-
-        WorkFlowAdvanced req = null;
-        try {
-            req = new ObjectMapper().readValue(reqString, WorkFlowAdvanced.class);
-        } catch (JsonProcessingException e) {
-            resp = ResponseUtil.returnApiResponse(null, e.getMessage());
-            LOG.error("Error converting body to Object. Error: {}", e.getMessage());
-        }
 
         if (req != null) {
             try {
                 LOG.info( isUpdate
                         ? "Updating"
-                        : "Saving" + " property type {} for WF Id: {}", req.getJarType(), workFlowId);
-                WorkFlowAdvanced ret = workFlowAdvancedService.saveJarFileAndItsProperties(file
-                        , req, workFlowId, isUpdate);
-                LOG.info("Saved property type {} for WF Id: {} with Id: {}", req.getJarType(), workFlowId, ret.getId());
+                        : "Saving" + " property type {} for WF Id: {}", req.getJarType(), req.getWorkFlowId());
+                WorkFlowAdvanced ret = workFlowAdvancedService
+                        .saveJarFileAndItsProperties(req, req.getWorkFlowId(), isUpdate);
+                LOG.info("Saved property type {} for WF Id: {} with Id: {}",
+                        req.getJarType(), req.getWorkFlowId(), ret.getId());
                 resp = new ApiRestResponse();
                 resp.setData(ret);
             } catch (Exception e) {
