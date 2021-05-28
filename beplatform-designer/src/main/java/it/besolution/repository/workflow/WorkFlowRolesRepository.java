@@ -22,7 +22,9 @@ public class WorkFlowRolesRepository {
 
     public List<WorkFlowRoles> getAllWorkFlowRoles(Integer workFlowId) throws Exception {
 
-        String sql = "SELECT * FROM workflow_role WHERE workflow_id = " + workFlowId;
+        String sql = "SELECT wr.*, wp.property_name FROM workflow_role wr " +
+        "inner join WORKFLOW_PROPERTY wp on wr.workflow_property_id = wp.id " +
+        "WHERE wr.workflow_id = " + workFlowId;
 
         LOG.info("SQL: {}", sql);
 

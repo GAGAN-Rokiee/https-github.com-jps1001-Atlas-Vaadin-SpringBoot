@@ -15,6 +15,7 @@ public class WorkFlowRoles {
     private Integer workFlowId;
     private String roleName;
     private Integer workFlowPropertyId;
+    private String workFlowPropertyName;
     private Boolean isDynamic = Boolean.FALSE;
     private Boolean isCreated = Boolean.FALSE;
 }
