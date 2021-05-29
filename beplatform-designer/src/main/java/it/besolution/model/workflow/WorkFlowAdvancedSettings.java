@@ -13,7 +13,6 @@ public class WorkFlowAdvancedSettings {
 
     private Integer id;
     private Integer workFlowId;
-    private Integer workFlowAdvancedId;
     private String settingName;
     private String settingValue;
 }

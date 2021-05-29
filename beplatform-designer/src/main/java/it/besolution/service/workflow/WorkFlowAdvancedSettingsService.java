@@ -13,20 +13,15 @@ public class WorkFlowAdvancedSettingsService {
     @Autowired
     private WorkFlowAdvancedSettingsRepository repository;
 
-    public List<WorkFlowAdvancedSettings> getAllSettings(Integer workFlowId,
-                                                         Integer workFlowAdvancedId) throws Exception {
+    public List<WorkFlowAdvancedSettings> getAllSettings(Integer workFlowId) throws Exception {
 
-        return repository.getAllAdvancedSettings(workFlowId, workFlowAdvancedId);
+        return repository.getAllAdvancedSettings(workFlowId);
     }
 
-    public List<WorkFlowAdvancedSettings> saveAll(List<WorkFlowAdvancedSettings> settings, Integer workFlowId,
-                                                  Integer workFlowAdvancedId) throws Exception {
-        settings.forEach(setting -> {
-            setting.setWorkFlowId(workFlowId);
-            setting.setWorkFlowAdvancedId(workFlowAdvancedId);
-        });
-
-        return repository.saveSettings(settings, workFlowId, workFlowAdvancedId);
+    public List<WorkFlowAdvancedSettings> saveAll(List<WorkFlowAdvancedSettings> settings, Integer workFlowId)
+            throws Exception {
+        settings.forEach(setting -> setting.setWorkFlowId(workFlowId));
+        return repository.saveSettings(settings, workFlowId);
     }
 
     public WorkFlowAdvancedSettings updateWorkFlowAdvancedSettings(WorkFlowAdvancedSettings settings)

@@ -22,15 +22,14 @@ public class WorkFlowAdvancedSettingsController {
     @Autowired
     private WorkFlowAdvancedSettingsService service;
 
-    @GetMapping("/all/workflow/{workFlowId}/advance/{advanceId}")
-    public ResponseEntity<ApiRestResponse> getAllSettings(@PathVariable Integer workFlowId,
-                                                          @PathVariable Integer advanceId) {
+    @GetMapping("/all/workflow/{workFlowId}")
+    public ResponseEntity<ApiRestResponse> getAllSettings(@PathVariable Integer workFlowId) {
 
         ApiRestResponse resp = null;
         try {
-            LOG.info("Getting all settings for WFA Id: {}", advanceId);
-            List<WorkFlowAdvancedSettings> allSettings = service.getAllSettings(workFlowId, advanceId);
-            LOG.info("Getting all settings for WFA Id: {}, total: {}", advanceId, allSettings.size());
+            LOG.info("Getting all settings for WF Id: {}", workFlowId);
+            List<WorkFlowAdvancedSettings> allSettings = service.getAllSettings(workFlowId);
+            LOG.info("Getting all settings for WF Id: {}, total: {}", workFlowId, allSettings.size());
             resp = new ApiRestResponse();
             resp.setData(allSettings);
         } catch (Exception e) {
@@ -40,16 +39,15 @@ public class WorkFlowAdvancedSettingsController {
         return new ResponseEntity<>(resp, resp.getIsError() ? HttpStatus.INTERNAL_SERVER_ERROR : HttpStatus.OK);
     }
 
-    @PostMapping("/save/workflow/{workFlowId}/advance/{advanceId}")
+    @PostMapping("/save/workflow/{workFlowId}")
     public ResponseEntity<ApiRestResponse> saveAllSettings(@RequestBody List<WorkFlowAdvancedSettings> settings,
-                                                          @PathVariable Integer workFlowId,
-                                                          @PathVariable Integer advanceId) {
+                                                          @PathVariable Integer workFlowId) {
 
         ApiRestResponse resp = null;
         try {
-            LOG.info("Saving settings for WFA Id: {}, Total: {}", advanceId, settings.size());
-            List<WorkFlowAdvancedSettings> allSettings = service.saveAll(settings, workFlowId, advanceId);
-            LOG.info("Saved settings for WFA Id: {}, Total: {}", advanceId, settings.size());
+            LOG.info("Saving settings for WF Id: {}, Total: {}", workFlowId, settings.size());
+            List<WorkFlowAdvancedSettings> allSettings = service.saveAll(settings, workFlowId);
+            LOG.info("Saved settings for WF Id: {}, Total: {}", settings.size());
             LOG.info("Total Count: {}", allSettings.size());
             resp = new ApiRestResponse();
             resp.setData(allSettings);
@@ -65,9 +63,9 @@ public class WorkFlowAdvancedSettingsController {
 
         ApiRestResponse resp = null;
         try {
-            LOG.info("Updating settings for WFA Id: {}, Id: {}", setting.getWorkFlowAdvancedId(), setting.getId());
+            LOG.info("Updating settings for WF Id: {}, Id: {}", setting.getWorkFlowId(), setting.getId());
             WorkFlowAdvancedSettings updatedSetting = service.updateWorkFlowAdvancedSettings(setting);
-            LOG.info("Updated settings for WFA Id: {}, Id: {}", setting.getWorkFlowAdvancedId(), setting.getId());
+            LOG.info("Updated settings for WF Id: {}, Id: {}", setting.getWorkFlowId(), setting.getId());
             resp = new ApiRestResponse();
             resp.setData(updatedSetting);
         } catch (Exception e) {

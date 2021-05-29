@@ -14,7 +14,6 @@ public class WorkFlowAdvancedSettingsMapper implements RowMapper<WorkFlowAdvance
         WorkFlowAdvancedSettings setting = new WorkFlowAdvancedSettings();
         setting.setId(rs.getInt("id"));
         setting.setWorkFlowId(rs.getInt("workflow_id"));
-        setting.setWorkFlowAdvancedId(rs.getInt("workflow_advanced_id"));
         setting.setSettingName(rs.getString("setting_name"));
         setting.setSettingValue(rs.getString("setting_value"));
 
