@@ -1,5 +1,6 @@
 package it.besolution.ui.solution;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +22,9 @@ import it.besolution.rest.ApiRestResponse;
 import it.besolution.utils.CommonUtils;
 
 public class SolutionPresenter {
-	
+
 	public List<SolutionModel> getSolutions() {
+		List<SolutionModel> listOfSolutions =  new ArrayList<SolutionModel>();
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			String solutions  = restTemplate.getForObject(SolutionApi.API_SOLUTION_GET_ALL,String.class);
@@ -32,17 +34,18 @@ public class SolutionPresenter {
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			List<SolutionModel> listOfSolutions = objectMapper.readValue(data.toString(), new TypeReference<List<SolutionModel>>(){});
+			listOfSolutions = objectMapper.readValue(data.toString(), new TypeReference<List<SolutionModel>>(){});
 
-			return listOfSolutions;
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, SolutionPresenter.class);
 		}
-		return null;
+		return listOfSolutions;
 	}
 
 
 	public ApiRestResponse  createNewSolution(Solution newSolution) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
@@ -50,20 +53,19 @@ public class SolutionPresenter {
 			HttpEntity<Solution> entity = new HttpEntity<Solution>(newSolution,headers);
 
 			String response = restTemplate.exchange(SolutionApi.API_SOLUTION_NEW, HttpMethod.POST, entity, String.class).getBody();
-		
+
 			JSONObject obj = new  JSONObject(response);
-						
-			ApiRestResponse restResponse = new ApiRestResponse();
+
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
 			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
 			restResponse.setData(obj.get("data"));
-		
-			return restResponse;
+
 		}
 		catch (Exception e) {
+			restResponse.setIsSuccess(false);
 			CommonUtils.printStakeTrace(e, SolutionPresenter.class);
 		}
-		return null;
+		return restResponse;
 	}
 
 

@@ -27,11 +27,10 @@ public class ObjectClassPresenter {
 
 
 	public ArrayList<ObjectClassModel> getObjectClasses() {
-		ArrayList<ObjectClassModel> listOfObjectClasses = null;
+		ArrayList<ObjectClassModel> listOfObjectClasses = new ArrayList<ObjectClassModel>();
 
 		try {
 
-			listOfObjectClasses = new ArrayList<ObjectClassModel>();
 			SolutionModel solutionModel = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
 
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
@@ -57,6 +56,8 @@ public class ObjectClassPresenter {
 	}
 
 	public ApiRestResponse  createNewObjectClass(ObjectClassModel newObject) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
@@ -70,18 +71,17 @@ public class ObjectClassPresenter {
 
 			JSONObject obj = new  JSONObject(response);
 
-			ApiRestResponse restResponse = new ApiRestResponse();
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
 			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
 			restResponse.setData(obj.get("data"));
 
-			return restResponse;
 		}
 		catch (Exception e) {
+			restResponse.setIsSuccess(false);
 			CommonUtils.printStakeTrace(e, ObjectClassPresenter.class);
 
 		}
-		return null;
+		return restResponse;
 	}
 
 }
