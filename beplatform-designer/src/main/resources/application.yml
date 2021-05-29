@@ -11,6 +11,10 @@ spring:
       enabled: true
       settings:
         web-allow-others: true
+  servlet:
+     multipart:
+         max-file-size: 100MB
+         max-request-size: 100MB
         
 server:
   port: ${PORT:8080}
@@ -20,4 +24,4 @@ server:
 logging:
    level:
       org:
-        atmosphere: warn
+        atmosphere: warn   

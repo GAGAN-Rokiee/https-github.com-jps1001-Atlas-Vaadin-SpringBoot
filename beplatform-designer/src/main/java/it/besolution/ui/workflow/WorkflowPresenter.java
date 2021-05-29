@@ -19,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.api.WorkflowApi;
+import it.besolution.model.workflow.WorkFlowAdvanced;
+import it.besolution.model.workflow.WorkFlowAdvancedSettings;
 import it.besolution.model.workflow.WorkFlowMaster;
 import it.besolution.model.workflow.WorkFlowProperty;
 import it.besolution.model.workflow.WorkFlowRoles;
@@ -31,11 +33,10 @@ public class WorkflowPresenter {
 
 
 	public ArrayList<WorkFlowMaster> getAllWorkflows() {
-		ArrayList<WorkFlowMaster> listOfWorkflows = null;
+		ArrayList<WorkFlowMaster> listOfWorkflows = new ArrayList<WorkFlowMaster>();
 
 		try {
 
-			listOfWorkflows = new ArrayList<WorkFlowMaster>();
 			SolutionModel solutionModel = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
 
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
@@ -64,6 +65,8 @@ public class WorkflowPresenter {
 	}
 
 	public ApiRestResponse createWorkflowMaster(WorkFlowMaster bean) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
@@ -79,21 +82,22 @@ public class WorkflowPresenter {
 
 			JSONObject obj = new  JSONObject(response);
 
-			ApiRestResponse restResponse = new ApiRestResponse();
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
 			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
 			restResponse.setData(obj.get("data"));
 
-			return restResponse;
 		} catch (Exception e) {
+			restResponse.setIsSuccess(false);
 			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
 
 		}
-		return null;
+		return restResponse;
 
 	}
 
 	public ApiRestResponse createWorkflowMProperty(WorkFlowProperty bean) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			
@@ -111,26 +115,24 @@ public class WorkflowPresenter {
 			String response = restTemplate.exchange(WorkflowApi.API_WORKFLOW_PROPERTY_SAVE,HttpMethod.POST, entity, String.class,params).getBody();
 			JSONObject obj = new  JSONObject(response);
 
-			ApiRestResponse restResponse = new ApiRestResponse();
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
 			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
 			restResponse.setData(obj.get("data"));
 
-			return restResponse;
 		} catch (Exception e) {
+			restResponse.setIsSuccess(false);
+
 			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
 
 		}
-		return null;
+		return restResponse;
 
 	}
 	
 	public ArrayList<WorkFlowProperty> getWorkflowProperties(WorkFlowMaster bean) {
-		ArrayList<WorkFlowProperty> listOfWorkflowsProperties = null;
+		ArrayList<WorkFlowProperty> listOfWorkflowsProperties = new ArrayList<WorkFlowProperty>();
 
 		try {
-
-			listOfWorkflowsProperties = new ArrayList<WorkFlowProperty>();
 			
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
 			params.put("workFlowId", bean.getId());
@@ -158,6 +160,8 @@ public class WorkflowPresenter {
 	}
 
 	public ApiRestResponse createWorkflowRoles(WorkFlowRoles bean) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			
@@ -175,26 +179,23 @@ public class WorkflowPresenter {
 			String response = restTemplate.exchange(WorkflowApi.API_WORKFLOW_ROLE_SAVE,HttpMethod.POST, entity, String.class,params).getBody();
 			JSONObject obj = new  JSONObject(response);
 
-			ApiRestResponse restResponse = new ApiRestResponse();
 			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
 			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
 			restResponse.setData(obj.get("data"));
 
-			return restResponse;
 		} catch (Exception e) {
+			restResponse.setIsSuccess(false);
 			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
 
 		}
-		return null;
+		return restResponse;
 
 	}
 	
 	public ArrayList<WorkFlowRoles> getWorkflowRoles(WorkFlowMaster bean) {
-		ArrayList<WorkFlowRoles> listOfWorkflowsRoles = null;
+		ArrayList<WorkFlowRoles> listOfWorkflowsRoles =  new ArrayList<WorkFlowRoles>();
 
 		try {
-
-			listOfWorkflowsRoles = new ArrayList<WorkFlowRoles>();
 			
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
 			params.put("workFlowId", bean.getId());
@@ -211,6 +212,129 @@ public class WorkflowPresenter {
 
 
 			listOfWorkflowsRoles = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<WorkFlowRoles>>(){});
+
+
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
+
+
+		}
+		return listOfWorkflowsRoles;
+	}
+	
+	public ApiRestResponse createWorkflowSettings(WorkFlowAdvancedSettings bean) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			List<WorkFlowAdvancedSettings> beanList = new ArrayList<WorkFlowAdvancedSettings>();
+			beanList.add(bean);
+			HttpEntity<List<WorkFlowAdvancedSettings>> entity = new HttpEntity<List<WorkFlowAdvancedSettings>>(beanList,headers);
+			
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("workFlowId", bean.getWorkFlowId());
+			
+			String response = restTemplate.exchange(WorkflowApi.API_WORKFLOW_SETTINGS_SAVE,HttpMethod.POST, entity, String.class,params).getBody();
+			JSONObject obj = new  JSONObject(response);
+
+			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
+			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
+			restResponse.setData(obj.get("data"));
+
+		} catch (Exception e) {
+			restResponse.setIsSuccess(false);
+			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
+
+		}
+		return restResponse;
+
+	}
+	
+	
+	public ArrayList<WorkFlowAdvancedSettings> getWorkflowAdvanceSettings(WorkFlowAdvancedSettings bean) {
+		ArrayList<WorkFlowAdvancedSettings> listOfWorkflowsRoles = new ArrayList<WorkFlowAdvancedSettings>(); 
+
+		try {
+			
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("workFlowId", bean.getWorkFlowId());
+
+			RestTemplate restTemplate = new RestTemplate();
+			String objects  = restTemplate.getForObject(WorkflowApi.API_WORKFLOW_SETTINGS_GET_ALL,String.class,params);
+
+			JSONObject obj = new  JSONObject(objects);
+			JSONArray data = obj.getJSONArray("data");
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			objectMapper.readTree(data.toString());
+
+
+			listOfWorkflowsRoles = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<WorkFlowAdvancedSettings>>(){});
+
+
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
+
+
+		}
+		return listOfWorkflowsRoles;
+	}
+
+	public ApiRestResponse createWorkflowJar(WorkFlowAdvanced bean) {
+		ApiRestResponse restResponse = new ApiRestResponse();
+
+		try {
+			RestTemplate restTemplate = new RestTemplate();
+			
+			HttpHeaders headers = new HttpHeaders();
+			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+			
+			HttpEntity<WorkFlowAdvanced> entity = new HttpEntity<WorkFlowAdvanced>(bean,headers);
+			
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("workFlowId", bean.getWorkFlowId());
+			
+			String response = restTemplate.exchange(WorkflowApi.API_WORKFLOW_ADVANCE_SAVE,HttpMethod.POST, entity, String.class,params).getBody();
+			JSONObject obj = new  JSONObject(response);
+
+			restResponse.setIsSuccess(obj.getBoolean("isSuccess"));
+			restResponse.setErrorMessage(String.valueOf(obj.get("errorMessage")));
+			restResponse.setData(obj.get("data"));
+
+		} catch (Exception e) {
+			restResponse.setIsSuccess(false);
+			CommonUtils.printStakeTrace(e, WorkflowPresenter.class);
+
+		}
+		return restResponse;
+
+	}
+	
+	
+	public ArrayList<WorkFlowAdvanced> getWorkflowAdvanceJar(WorkFlowAdvanced bean) {
+		ArrayList<WorkFlowAdvanced> listOfWorkflowsRoles = new ArrayList<WorkFlowAdvanced>();
+
+		try {
+			
+			HashMap<String, Integer> params = new HashMap<String, Integer>();
+			params.put("workFlowId", bean.getWorkFlowId());
+
+			RestTemplate restTemplate = new RestTemplate();
+			String objects  = restTemplate.getForObject(WorkflowApi.API_WORKFLOW_ADVANCE_GET_ALL,String.class,params);
+
+			JSONObject obj = new  JSONObject(objects);
+			JSONArray data = obj.getJSONArray("data");
+
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			objectMapper.readTree(data.toString());
+
+
+			listOfWorkflowsRoles = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<WorkFlowAdvanced>>(){});
 
 
 		} catch (Exception e) {
