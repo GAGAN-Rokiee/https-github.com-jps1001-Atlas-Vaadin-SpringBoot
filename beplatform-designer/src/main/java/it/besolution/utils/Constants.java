@@ -7,5 +7,4 @@ public class Constants {
 
 	public static String CURRENT_USER_SCREEN = "ScreenFactory";
 	public static String SOLUTION_MODEL = "";
-
 }

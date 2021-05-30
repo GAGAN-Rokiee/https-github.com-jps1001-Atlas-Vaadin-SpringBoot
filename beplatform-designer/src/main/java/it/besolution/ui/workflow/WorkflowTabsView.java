@@ -1,8 +1,13 @@
 package it.besolution.ui.workflow;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.io.output.NullOutputStream;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Unit;
@@ -20,15 +25,19 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.menubar.MenuBar;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.upload.Receiver;
 import com.vaadin.flow.component.upload.Upload;
 import com.vaadin.flow.data.binder.Binder;
 
+import it.besolution.model.workflow.WorkFlowAdvanced;
+import it.besolution.model.workflow.WorkFlowAdvancedSettings;
 import it.besolution.model.workflow.WorkFlowMaster;
 import it.besolution.model.workflow.WorkFlowProperty;
 import it.besolution.model.workflow.WorkFlowRoles;
@@ -48,7 +57,8 @@ public class WorkflowTabsView extends VerticalLayout{
 	public static String FLOW_TAB = "flow";
 	public static String ROLES_TAB = "roles";
 	public static String ADVANCED_TAB = "advanced";
-
+	public static String SETTINGS_TAB = "settings";
+	
 	private Tab tabInfo = null;
 	private Tab tabProperties = null;
 	private Tab tabFlow = null;
@@ -66,6 +76,8 @@ public class WorkflowTabsView extends VerticalLayout{
 	private Dialog dialogRolesForm = null;
 	private VerticalLayout pageRoles = null;
 
+
+	private Dialog dialogSettingsForm = null;
 	private VerticalLayout pageAdvanced = null;
 
 	private Map<Tab, Component> tabsToPages = null;
@@ -88,15 +100,30 @@ public class WorkflowTabsView extends VerticalLayout{
 
 	private Grid<WorkFlowProperty> gridProperty = null;
 	private Grid<WorkFlowRoles> gridRoles = null;
-	private Grid<WorkflowModel> gridSettings = null;
+	private Grid<WorkFlowAdvancedSettings> gridSettings = null;
 
 	private Binder<WorkFlowMaster> binderWorkflowMaster = null;
 	private Binder<WorkFlowProperty> binderWorkflowProperty = null;
 	private Binder<WorkFlowRoles> binderWorkflowRole = null;
+	private Binder<WorkFlowAdvancedSettings> binderAdvancedSettings = null;
 
 	private WorkFlowMaster workflowMasterModel = null;
 
 	private ArrayList<WorkFlowProperty> propertiesList = null;
+
+	private String filePath = "D:\\UploadAtlas\\";
+
+	private String uploadedFile = null; 
+
+	private boolean isUploaded1 = false;
+	private boolean isUploaded2 = false;
+	private boolean isUploaded3 = false;
+	private boolean isUploaded4 = false;
+
+	private TextField tfUp1 = null;
+	private TextField tfUp2 = null;
+	private TextField tfUp3 = null;
+	private TextField tfUp4 = null;
 
 	public WorkflowTabsView(){
 
@@ -114,8 +141,11 @@ public class WorkflowTabsView extends VerticalLayout{
 
 		createPropertyForm();
 		createRoleForm();
-
+		createSettingsForm();
 	}
+
+
+
 
 
 	private void createTabs() {
@@ -124,6 +154,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			binderWorkflowMaster = new Binder<WorkFlowMaster>(WorkFlowMaster.class);
 			binderWorkflowProperty = new Binder<WorkFlowProperty>(WorkFlowProperty.class);
 			binderWorkflowRole = new Binder<WorkFlowRoles>(WorkFlowRoles.class);
+			binderAdvancedSettings = new Binder<WorkFlowAdvancedSettings>(WorkFlowAdvancedSettings.class);
 
 			tabInfo = new Tab("Info");
 			pageInfoForm = new VerticalLayout();
@@ -170,8 +201,12 @@ public class WorkflowTabsView extends VerticalLayout{
 
 			tabs.addSelectedChangeListener(event -> {
 
+				if(event.getSelectedTab().equals(tabAdvanced)) {
+					loadTabData(ADVANCED_TAB);
+				}
+				
 				panel.setContent(tabsToPages.get(tabs.getSelectedTab()));
-
+				
 			});
 
 			add(tabs, panel);	
@@ -204,7 +239,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			menuItem.getSubMenu().add(btnDelete);
 			menuBar.setThemeName("menuSolDtl");
 
-			hLayoutHeader.add(lblPageTitle,btnSave,menuBar);
+			hLayoutHeader.add(lblPageTitle,menuBar);
 
 			add(hLayoutHeader);
 
@@ -214,97 +249,6 @@ public class WorkflowTabsView extends VerticalLayout{
 		}
 
 	}
-
-	private void createAdvancedView() {
-
-		try {
-
-			VerticalLayout vLayoutView = new VerticalLayout();
-			vLayoutView.setWidthFull();
-			vLayoutView.setMargin(false);
-			vLayoutView.setPadding(false);
-
-			HorizontalLayout hLayoutHeader = new HorizontalLayout();
-			hLayoutHeader.setWidthFull();
-			hLayoutHeader.setMargin(false);
-			hLayoutHeader.setPadding(false);
-
-			H3 lblPageTitle = new H3("Connettori");
-			lblPageTitle.getStyle().set("flex-grow", "1");
-
-
-			hLayoutHeader.add(lblPageTitle);
-
-			VerticalLayout vLayoutForm = new VerticalLayout();
-			vLayoutForm.setWidth(50, Unit.PERCENTAGE);
-			vLayoutForm.setMargin(false);
-			vLayoutForm.setPadding(false);
-
-			Label lblUp1 = new Label("Actions Jar");
-			lblUp1.getStyle().set("margin-top", "2rem");
-			Upload up1 = new Upload();
-			up1.setSizeFull();
-			TextField tfUp1 = new TextField("Actions Class");
-			tfUp1.setWidthFull();
-
-			Label lblUp2 = new Label("Mail Jar");
-			lblUp2.getStyle().set("margin-top", "2rem");
-			Upload up2 = new Upload();
-			up2.setSizeFull();
-			TextField tfUp2 = new TextField("Mail Class");
-			tfUp2.setWidthFull();
-
-			Label lblUp3 = new Label("Sync Jar");
-			lblUp3.getStyle().set("margin-top", "2rem");
-			Upload up3 = new Upload();
-			up3.setSizeFull();
-			TextField tfUp3 = new TextField("Sync Class");
-			tfUp3.setWidthFull();
-
-			Label lblUp4 = new Label("Audit Jar");
-			lblUp4.getStyle().set("margin-top", "2rem");
-			Upload up4 = new Upload();
-			up4.setSizeFull();
-			TextField tfUp4 = new TextField("Audit Class");
-			tfUp4.setWidthFull();
-
-
-			gridSettings = new Grid<WorkflowModel>(WorkflowModel.class);
-			gridSettings.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS,GridVariant.LUMO_WRAP_CELL_CONTENT,GridVariant.LUMO_ROW_STRIPES,GridVariant.LUMO_COMPACT);
-			gridSettings.setWidthFull();
-
-			ArrayList<WorkflowModel> objects = new ArrayList<WorkflowModel>();
-
-			gridSettings.setItems(objects);
-
-			gridSettings.setColumns("settingName","settingValue");
-			gridSettings.getColumnByKey("settingName").setHeader("Setting Name");
-			gridSettings.getColumnByKey("settingValue").setHeader("Setting Value");
-
-
-			vLayoutForm.add(lblUp1,up1,tfUp1,lblUp2,up2,tfUp2,lblUp3,up3,tfUp3,lblUp4,up4,tfUp4);
-
-			HorizontalLayout hLayoutSettings = new HorizontalLayout();
-			hLayoutSettings.setWidthFull();
-			hLayoutSettings.setMargin(false);
-			hLayoutSettings.setPadding(false);
-
-			H3 lblPageSettings = new H3("Settings");
-			lblPageSettings.getStyle().set("flex-grow", "1");
-
-
-			hLayoutSettings.add(lblPageSettings);
-
-			vLayoutView.add(hLayoutHeader,vLayoutForm,hLayoutSettings,gridSettings);
-
-			pageAdvanced.add(vLayoutView);
-
-		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
-		}
-
-	}
-
 
 
 	private void createPropertiesView() {
@@ -543,15 +487,22 @@ public class WorkflowTabsView extends VerticalLayout{
 			ArrayList<WorkFlowRoles> objects = new ArrayList<WorkFlowRoles>();
 
 			gridRoles.setItems(objects);
-
-			gridRoles.setColumns("roleName","isDynamic","workFlowPropertyId","isCreated");
-			gridRoles.getColumnByKey("roleName").setHeader("Role Name");
-			gridRoles.getColumnByKey("isDynamic").setHeader("Dynamic");
-			gridRoles.getColumnByKey("workFlowPropertyId").setHeader("Dynamic Property");
-			gridRoles.getColumnByKey("isCreated").setHeader("Creation");
+			
+			gridRoles.addColumn(obj -> obj.getRoleName()).setHeader("Role Name").setKey("RN");	
+			gridRoles.addColumn(obj -> obj.getIsDynamic() ?"True":"False").setHeader("Dynamic").setKey("DN");	
+			gridRoles.addColumn(obj -> obj.getWorkFlowPropertyName()).setHeader("Dynamic Property").setKey("DP");	
+			gridRoles.addColumn(obj -> obj.getIsCreated() ?"True":"False").setHeader("Creation").setKey("CR");
+			
+			gridRoles.getColumnByKey("id").setVisible(false);
+			gridRoles.getColumnByKey("workFlowId").setVisible(false);
+			gridRoles.getColumnByKey("roleName").setVisible(false);
+			gridRoles.getColumnByKey("workFlowPropertyId").setVisible(false);
+			gridRoles.getColumnByKey("workFlowPropertyName").setVisible(false);
+			gridRoles.getColumnByKey("isDynamic").setVisible(false);
+			gridRoles.getColumnByKey("isCreated").setVisible(false);
 
 			vLayoutView.add(hLayoutHeader,gridRoles);
-
+			
 			pageRoles.add(vLayoutView);
 
 		} catch (Exception e) {
@@ -600,7 +551,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			vLayoutDynamicProperty.setPadding(false);
 			vLayoutDynamicProperty.setMargin(false);
 			vLayoutDynamicProperty.setSpacing(false);
-			
+
 			tfDynamicProperty = new ComboBox<WorkFlowProperty>("Dynamic Property");
 			tfDynamicProperty.setItemLabelGenerator(WorkFlowProperty::getPropertyName);
 			tfDynamicProperty.setRequired(true);
@@ -610,7 +561,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			lblDynamicPropertyError.setVisible(false);
 
 			vLayoutDynamicProperty.add(tfDynamicProperty,lblDynamicPropertyError);
-			
+
 			ComboBox<Boolean> tfCreation = new ComboBox<Boolean>("Creation");
 			tfCreation.setItems(false,true);
 			binderWorkflowRole.forField(tfCreation).asRequired("Creation is required").bind("isCreated");
@@ -722,9 +673,9 @@ public class WorkflowTabsView extends VerticalLayout{
 			tfPropName.setMaxLength(100);
 			binderWorkflowProperty.forField(tfPropName).asRequired("Name is required").bind("propertyName");
 
-			TextField tfType = new TextField("Type");
-			tfType.setMaxLength(50);
-			binderWorkflowProperty.forField(tfType).asRequired("Type is required").bind("propertyType");
+			ComboBox<String> cboType = new ComboBox<String>("Type");
+			cboType.setItems("String","Integer","Decimal","Date","Datetime");
+			binderWorkflowProperty.forField(cboType).asRequired("Type is required").bind("propertyType");
 
 			Button btnCancel = new Button("Cancel");
 			btnCancel.addClickListener(eve -> {
@@ -779,7 +730,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			HorizontalLayout hLayouBtn = new HorizontalLayout();
 			hLayouBtn.add(btnCancel,btnReset,btnSubmit);
 
-			formLayout.add(tfPropName,tfType,hLayouBtn);
+			formLayout.add(tfPropName,cboType,hLayouBtn);
 			binderWorkflowProperty.bindInstanceFields(formLayout);
 			binderWorkflowProperty.setBean(new WorkFlowProperty());
 
@@ -873,34 +824,112 @@ public class WorkflowTabsView extends VerticalLayout{
 
 	}
 
-	public void selectTab(String tabName) {
+
+	private void createSettingsForm() {
+
 		try {
 
-			switch(tabName)
-			{
-			case "info":
-				tabs.setSelectedTab(tabInfo);
-				break;
-			case "properties":
-				tabs.setSelectedTab(tabProperties);
-				break;
-			case "flow":
-				tabs.setSelectedTab(tabFlow);
-				break;
-			case "roles":
-				tabs.setSelectedTab(tabRoles);
-				break;
-			case "advanced":
-				tabs.setSelectedTab(tabAdvanced);
-				break;
-			default:
-				System.out.println("no matching tab");
-			}
-			panel.setContent(tabsToPages.get(tabs.getSelectedTab()));
+			dialogSettingsForm = new Dialog();
+			dialogSettingsForm.setCloseOnOutsideClick(false);
+			dialogSettingsForm.setCloseOnEsc(false);
+			dialogSettingsForm.setModal(true);
+
+			VerticalLayout vLayout = new VerticalLayout();
+			vLayout.setSizeFull();
+			vLayout.setMargin(false);
+			vLayout.setPadding(false);
+
+			HorizontalLayout hLayoutHeader = new HorizontalLayout();
+			hLayoutHeader.setWidthFull();
+			hLayoutHeader.setMargin(false);
+			hLayoutHeader.setPadding(false);
+
+			H3 lblPageTitle = new H3("Advanced Settings");
+			lblPageTitle.getStyle().set("flex-grow", "1");
+
+			hLayoutHeader.add(lblPageTitle);
+
+			VerticalLayout formLayout  = new VerticalLayout();
+
+			TextField tfName = new TextField("Name");
+			tfName.setMaxLength(100);
+			binderAdvancedSettings.forField(tfName).asRequired("Name is required").bind("settingName");
+
+			TextField tfValue = new TextField("Value");
+			tfValue.setMaxLength(100);
+			binderAdvancedSettings.forField(tfValue).asRequired("Value is required").bind("settingValue");
+
+
+			Button btnCancel = new Button("Cancel");
+			btnCancel.addClickListener(eve -> {
+				try {
+
+					binderAdvancedSettings.setBean(new WorkFlowAdvancedSettings());
+					dialogSettingsForm.close();
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+
+				}
+			});
+
+			Button btnReset = new Button("Reset");
+			btnReset.addThemeVariants(ButtonVariant.LUMO_ERROR);
+			btnReset.addClickListener(eve -> {
+				try {
+
+					binderAdvancedSettings.setBean(new WorkFlowAdvancedSettings());
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+
+				}
+			});
+
+			Button btnSubmit = new Button("Submit");
+			btnSubmit.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+			btnSubmit.addClickListener(event -> {
+				try {
+
+					if(binderAdvancedSettings.validate().isOk()){
+
+						binderAdvancedSettings.getBean().setWorkFlowId(workflowMasterModel.getId());
+
+						ApiRestResponse response = new WorkflowPresenter().createWorkflowSettings(binderAdvancedSettings.getBean());
+						if(!response.getIsSuccess()) {
+
+							Notification.show(response.getErrorMessage());
+
+						}else {
+
+							binderAdvancedSettings.setBean(new WorkFlowAdvancedSettings());
+							loadTabData(SETTINGS_TAB);
+							dialogSettingsForm.close();
+						}
+
+					}
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});
+			HorizontalLayout hLayouBtn = new HorizontalLayout();
+			hLayouBtn.add(btnCancel,btnReset,btnSubmit);
+
+			formLayout.add(tfName,tfValue,hLayouBtn);
+
+			binderAdvancedSettings.bindInstanceFields(formLayout);
+			binderAdvancedSettings.setBean(new WorkFlowAdvancedSettings());
+
+			vLayout.add(hLayoutHeader,formLayout);
+
+			dialogSettingsForm.add(vLayout);
 
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+
 		}
+
+
 	}
 
 
@@ -913,9 +942,9 @@ public class WorkflowTabsView extends VerticalLayout{
 			tabAdvanced.setEnabled(true);
 
 			workflowMasterModel = workflowModel;
-			
+
 			loadScreenData();
-			
+
 			tabs.setSelectedTab(tabInfo);
 
 			lblID.setText(String.valueOf(workflowMasterModel.getId()));
@@ -959,6 +988,33 @@ public class WorkflowTabsView extends VerticalLayout{
 
 				break;
 			case "advanced":
+				
+				uploadedFile = null; 
+
+				isUploaded1 = false;
+				isUploaded2 = false;
+				isUploaded3 = false;
+				isUploaded4 = false;
+
+				tfUp1.clear();
+				tfUp2.clear();
+				tfUp3.clear();
+				tfUp4.clear();
+				
+
+				tfUp1.setInvalid(false);
+				tfUp2.setInvalid(false);
+				tfUp3.setInvalid(false);
+				tfUp3.setInvalid(false);
+
+
+				break;
+			case "settings":
+				
+				WorkFlowAdvancedSettings workFlowAdvancedSettings =  new WorkFlowAdvancedSettings();
+				workFlowAdvancedSettings.setWorkFlowId(workflowMasterModel.getId());
+				ArrayList<WorkFlowAdvancedSettings> settings = new WorkflowPresenter().getWorkflowAdvanceSettings(workFlowAdvancedSettings);
+				gridSettings.setItems(settings);
 
 				break;
 			default:
@@ -980,37 +1036,642 @@ public class WorkflowTabsView extends VerticalLayout{
 			ArrayList<WorkFlowRoles> roles = new WorkflowPresenter().getWorkflowRoles(workflowMasterModel);
 			gridRoles.setItems(roles);
 
+			WorkFlowAdvancedSettings workFlowAdvancedSettings =  new WorkFlowAdvancedSettings();
+			workFlowAdvancedSettings.setWorkFlowId(workflowMasterModel.getId());
+			ArrayList<WorkFlowAdvancedSettings> settings = new WorkflowPresenter().getWorkflowAdvanceSettings(workFlowAdvancedSettings);
+			gridSettings.setItems(settings);
 
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
 		}
 	}
-	
+
 	public void resetScreen() {
 		try {
-			
+
 			tabs.setSelectedIndex(0);
-			
+
 			panel.setContent(pageInfoForm);
 
 			tabProperties.setEnabled(false);
 			tabFlow.setEnabled(false);
 			tabRoles.setEnabled(false);
 			tabAdvanced.setEnabled(false);
-			
+
 			binderWorkflowMaster.setBean(new WorkFlowMaster());
 			binderWorkflowProperty.setBean(new WorkFlowProperty());
 			binderWorkflowRole.setBean(new WorkFlowRoles());
-			
+			binderAdvancedSettings.setBean(new WorkFlowAdvancedSettings());
+
 			gridProperty.setItems(new ArrayList<WorkFlowProperty>());
 			gridRoles.setItems(new ArrayList<WorkFlowRoles>());
+			gridSettings.setItems(new WorkFlowAdvancedSettings());
+
 			tfDynamicProperty.setItems(new ArrayList<WorkFlowProperty>());
 
-			
+			uploadedFile = null; 
+
+			isUploaded1 = false;
+			isUploaded2 = false;
+			isUploaded3 = false;
+			isUploaded4 = false;
+
+			tfUp1.clear();
+			tfUp2.clear();
+			tfUp3.clear();
+			tfUp4.clear();
+
+			tfUp1.setInvalid(false);
+			tfUp2.setInvalid(false);
+			tfUp3.setInvalid(false);
+			tfUp3.setInvalid(false);
+
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
 
 		}
+	}
+
+	private void createAdvancedView() {
+
+		try {
+
+			VerticalLayout vLayoutView = new VerticalLayout();
+			vLayoutView.setWidthFull();
+			vLayoutView.setMargin(false);
+			vLayoutView.setPadding(false);
+
+			HorizontalLayout hLayoutHeader = new HorizontalLayout();
+			hLayoutHeader.setWidthFull();
+			hLayoutHeader.setMargin(false);
+			hLayoutHeader.setPadding(false);
+
+			H3 lblPageTitle = new H3("Connettori");
+			lblPageTitle.getStyle().set("flex-grow", "1");
+
+
+			hLayoutHeader.add(lblPageTitle);
+
+			VerticalLayout vLayoutForm = new VerticalLayout();
+			vLayoutForm.setWidth(50, Unit.PERCENTAGE);
+			vLayoutForm.setMargin(false);
+			vLayoutForm.setPadding(false);
+
+			Label lblUp1 = new Label("Actions Jar");
+			lblUp1.getStyle().set("margin-top", "2rem");
+			Upload up1 = new Upload();
+			up1.setWidthFull();
+			up1.setHeight("6rem");
+			tfUp1 = new TextField("Actions Class");
+			tfUp1.setWidthFull();
+			tfUp1.setRequired(true);
+			tfUp1.setErrorMessage("Actions Class is required");
+			Button btn1 = new Button("Submit");
+			btn1.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+
+			Label lblUp2 = new Label("Mail Jar");
+			lblUp2.getStyle().set("margin-top", "2rem");
+			Upload up2 = new Upload();
+			up2.setWidthFull();
+			up2.setHeight("6rem");
+			tfUp2 = new TextField("Mail Class");
+			tfUp2.setWidthFull();
+			tfUp2.setRequired(true);
+			tfUp2.setErrorMessage("Mail Class is required");
+			Button btn2 = new Button("Submit");
+			btn2.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+
+			Label lblUp3 = new Label("Sync Jar");
+			lblUp3.getStyle().set("margin-top", "2rem");
+			Upload up3 = new Upload();
+			up3.setWidthFull();
+			up3.setHeight("6rem");
+			tfUp3 = new TextField("Sync Class");
+			tfUp3.setWidthFull();
+			tfUp3.setRequired(true);
+			tfUp3.setErrorMessage("Sync Class is required");
+			Button btn3 = new Button("Submit");
+			btn3.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+
+			Label lblUp4 = new Label("Audit Jar");
+			lblUp4.getStyle().set("margin-top", "2rem");
+			Upload up4 = new Upload();
+			up4.setWidthFull();
+			up4.setHeight("6rem");
+			tfUp4 = new TextField("Audit Class");
+			tfUp4.setWidthFull();
+			tfUp4.setRequired(true);
+			tfUp4.setErrorMessage("Audit Class is required");
+			Button btn4 = new Button("Submit");
+			btn4.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+
+			gridSettings = new Grid<WorkFlowAdvancedSettings>(WorkFlowAdvancedSettings.class);
+			gridSettings.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS,GridVariant.LUMO_WRAP_CELL_CONTENT,GridVariant.LUMO_ROW_STRIPES,GridVariant.LUMO_COMPACT);
+			gridSettings.setWidthFull();
+
+			ArrayList<WorkFlowAdvancedSettings> objects = new ArrayList<WorkFlowAdvancedSettings>();
+
+			gridSettings.setItems(objects);
+
+			gridSettings.setColumns("settingName","settingValue");
+			gridSettings.getColumnByKey("settingName").setHeader("Setting Name");
+			gridSettings.getColumnByKey("settingValue").setHeader("Setting Value");
+
+			vLayoutForm.add(lblUp1,up1,tfUp1,btn1,lblUp2,up2,tfUp2,btn2,lblUp3,up3,tfUp3,btn3,lblUp4,up4,tfUp4,btn4);
+
+			HorizontalLayout hLayoutSettings = new HorizontalLayout();
+			hLayoutSettings.setWidthFull();
+			hLayoutSettings.setMargin(false);
+			hLayoutSettings.setPadding(false);
+
+			H3 lblPageSettings = new H3("Settings");
+			lblPageSettings.getStyle().set("flex-grow", "1");
+
+			Button btnNew  = new Button("New");
+			btnNew.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+			btnNew.addClickListener(event ->{
+				try {
+
+					if(!dialogSettingsForm.isOpened()) {
+						dialogSettingsForm.open();
+					}
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});
+
+
+			hLayoutSettings.add(lblPageSettings,btnNew);
+
+			vLayoutView.add(hLayoutHeader,vLayoutForm,hLayoutSettings,gridSettings);
+
+			pageAdvanced.add(vLayoutView);
+
+			up1.setMaxFileSize((int)1e+8);
+			up2.setMaxFileSize((int)1e+8);
+			up3.setMaxFileSize((int)1e+8);
+			up4.setMaxFileSize((int)1e+8);
+
+			up1.setReceiver(new Receiver() {
+
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public OutputStream receiveUpload(String fileName, String mimeType) {
+
+					FileOutputStream outputStream =null;
+					try {
+
+						String[] temp = fileName.split("\\.");
+						String fileMimeType = temp[temp.length-1];
+						if(fileMimeType.equalsIgnoreCase("jar")){
+
+
+							outputStream = new FileOutputStream(new File(filePath+fileName));
+							return outputStream;
+
+
+						}
+						else{
+							up1.interruptUpload();
+							Notification.show("Please select valid jar file",3000, Position.TOP_CENTER);
+
+						}					
+
+					} catch (Exception e) {
+						up1.interruptUpload();
+						CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+					}
+					return new NullOutputStream();
+
+				}
+			});
+
+			up1.addSucceededListener(suc ->{
+				try {
+
+					uploadedFile = filePath+suc.getFileName();
+					isUploaded1 = true;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up1.addFileRejectedListener(rej ->{
+				try {
+
+					Notification.show("Max file size allowed 100MB",3000, Position.TOP_CENTER);
+					isUploaded1 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up1.addFailedListener(failed ->{
+				try {
+
+					Notification.show("ACTION Jar File Uploading Failed",3000, Position.TOP_CENTER);
+					isUploaded1 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up2.setReceiver(new Receiver() {
+
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public OutputStream receiveUpload(String fileName, String mimeType) {
+
+					FileOutputStream outputStream =null;
+					try {
+
+						String[] temp = fileName.split("\\.");
+						String fileMimeType = temp[temp.length-1];
+						if(fileMimeType.equalsIgnoreCase("jar")){
+
+
+							outputStream = new FileOutputStream(new File(filePath+fileName));
+							return outputStream;
+
+
+						}
+						else{
+							up2.interruptUpload();
+							Notification.show("Please select valid jar file",3000, Position.TOP_CENTER);
+
+						}
+
+
+					} catch (Exception e) {
+						up2.interruptUpload();
+						CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+					}
+					return new NullOutputStream();
+
+
+				}
+			});
+
+			up2.addSucceededListener(suc ->{
+				try {
+
+					uploadedFile = filePath+suc.getFileName();
+					isUploaded2 = true;
+
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up2.addFileRejectedListener(rej ->{
+				try {
+
+					Notification.show("Max file size allowed 100MB",3000, Position.TOP_CENTER);
+					isUploaded2 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up2.addFailedListener(failed ->{
+				try {
+
+					Notification.show("MAIL Jar File Uploading Failed",3000, Position.TOP_CENTER);
+					isUploaded2 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+
+			up3.setReceiver(new Receiver() {
+
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public OutputStream receiveUpload(String fileName, String mimeType) {
+
+					FileOutputStream outputStream =null;
+					try {
+
+
+						String[] temp = fileName.split("\\.");
+						String fileMimeType = temp[temp.length-1];
+						if(fileMimeType.equalsIgnoreCase("jar")){
+
+
+							outputStream = new FileOutputStream(new File(filePath+fileName));
+							return outputStream;
+
+						}
+						else{
+							up3.interruptUpload();
+							Notification.show("Please select valid jar file",3000, Position.TOP_CENTER);
+
+						}
+
+
+					} catch (Exception e) {
+						up3.interruptUpload();
+						CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+					}
+					return new NullOutputStream();
+
+				}
+			});
+
+			up3.addSucceededListener(suc ->{
+				try {
+
+					uploadedFile = filePath+suc.getFileName();
+					isUploaded3 = true;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up3.addFileRejectedListener(rej ->{
+				try {
+
+					Notification.show("Max file size allowed 100MB",3000, Position.TOP_CENTER);
+					isUploaded3 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up3.addFailedListener(failed ->{
+				try {
+
+					Notification.show("SYNC Jar File Uploading Failed",3000, Position.TOP_CENTER);
+					isUploaded3 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+
+			up4.setReceiver(new Receiver() {
+
+
+				private static final long serialVersionUID = 1L;
+
+				@Override
+				public OutputStream receiveUpload(String fileName, String mimeType) {
+
+					FileOutputStream outputStream =null;
+					try {
+
+						String[] temp = fileName.split("\\.");
+						String fileMimeType = temp[temp.length-1];
+						if(fileMimeType.equalsIgnoreCase("jar")){
+
+
+							outputStream = new FileOutputStream(new File(filePath+fileName));
+							return outputStream;
+
+						}
+						else{
+							up4.interruptUpload();
+							Notification.show("Please select valid jar file",3000, Position.TOP_CENTER);
+
+						}
+
+					} catch (Exception e) {
+						up4.interruptUpload();
+
+						CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+					}
+					return new NullOutputStream();
+
+
+				}
+			});
+
+			up4.addSucceededListener(suc ->{
+				try {
+
+					uploadedFile = filePath+suc.getFileName();
+					isUploaded4 = true;
+
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up4.addFileRejectedListener(rej ->{
+				try {
+
+					Notification.show("Max file size allowed 100MB",3000, Position.TOP_CENTER);
+					isUploaded4 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			up4.addFailedListener(failed ->{
+				try {
+
+					Notification.show("AUDIT Jar File Uploading Failed",3000, Position.TOP_CENTER);
+					isUploaded4 = false;
+
+				} catch (Exception e2) {
+					CommonUtils.printStakeTrace(e2, WorkflowTabsView.class);
+
+				}
+			});
+
+			btn1.addClickListener(event -> {
+				try {
+					tfUp1.setInvalid(false);
+
+					if(!tfUp1.isEmpty() && isUploaded1) {
+
+						WorkFlowAdvanced bean = new WorkFlowAdvanced();
+						bean.setJarPath(uploadedFile);
+						bean.setJarClass(tfUp1.getValue());
+						bean.setWorkFlowId(workflowMasterModel.getId());
+						bean.setJarType("ACTION");
+
+						ApiRestResponse response = new WorkflowPresenter().createWorkflowJar(bean);
+						if(!response.getIsSuccess()) {
+
+							Notification.show(response.getErrorMessage());
+						}else {
+
+							isUploaded1 = false;
+							Notification.show(uploadedFile+" File Uploaded Successfully",3000, Position.TOP_CENTER);
+
+						}
+
+					}else if(tfUp1.isEmpty())
+					{
+
+						tfUp1.setInvalid(true);
+
+					}else if(!isUploaded1)
+					{
+
+						Notification.show("Please select the file",3000, Position.TOP_CENTER);
+					}
+					uploadedFile = null;
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});
+
+			btn2.addClickListener(event -> {
+				try {
+					tfUp2.setInvalid(false);
+
+					if(!tfUp2.isEmpty() && isUploaded2) {
+
+						WorkFlowAdvanced bean = new WorkFlowAdvanced();
+						bean.setJarPath(uploadedFile);
+						bean.setJarClass(tfUp2.getValue());
+						bean.setWorkFlowId(workflowMasterModel.getId());
+						bean.setJarType("MAIL");
+
+						ApiRestResponse response = new WorkflowPresenter().createWorkflowJar(bean);
+						if(!response.getIsSuccess()) {
+
+							Notification.show(response.getErrorMessage());
+						}else {
+
+							isUploaded2 = false;
+							Notification.show(uploadedFile+" File Uploaded Successfully",3000, Position.TOP_CENTER);
+
+						}
+
+					}else if(tfUp2.isEmpty())
+					{
+
+						tfUp2.setInvalid(true);
+
+					}else if(!isUploaded2)
+					{
+
+						Notification.show("Please select the file",3000, Position.TOP_CENTER);
+					}
+					uploadedFile = null;
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});
+
+			btn3.addClickListener(event -> {
+				try {
+					tfUp3.setInvalid(false);
+
+					if(!tfUp3.isEmpty() && isUploaded3) {
+
+						WorkFlowAdvanced bean = new WorkFlowAdvanced();
+						bean.setJarPath(uploadedFile);
+						bean.setJarClass(tfUp3.getValue());
+						bean.setWorkFlowId(workflowMasterModel.getId());
+						bean.setJarType("SYNC");
+
+						ApiRestResponse response = new WorkflowPresenter().createWorkflowJar(bean);
+						if(!response.getIsSuccess()) {
+
+							Notification.show(response.getErrorMessage());
+						}else {
+
+							isUploaded3 = false;
+							Notification.show(uploadedFile+" File Uploaded Successfully",3000, Position.TOP_CENTER);
+
+						}
+
+					}else if(tfUp3.isEmpty())
+					{
+
+						tfUp3.setInvalid(true);
+
+					}else if(!isUploaded3)
+					{
+
+						Notification.show("Please select the file",3000, Position.TOP_CENTER);
+					}
+					uploadedFile = null;
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});			
+
+			btn4.addClickListener(event -> {
+				try {
+					tfUp4.setInvalid(false);
+
+					if(!tfUp4.isEmpty() && isUploaded4) {
+
+						WorkFlowAdvanced bean = new WorkFlowAdvanced();
+						bean.setJarPath(uploadedFile);
+						bean.setJarClass(tfUp4.getValue());
+						bean.setJarType("AUDIT");
+
+						ApiRestResponse response = new WorkflowPresenter().createWorkflowJar(bean);
+						if(!response.getIsSuccess()) {
+
+							Notification.show(response.getErrorMessage());
+						}else {
+
+							isUploaded4 = false;
+							Notification.show(uploadedFile+" File Uploaded Successfully",3000, Position.TOP_CENTER);
+
+						}
+
+					}else if(tfUp4.isEmpty())
+					{
+
+						tfUp4.setInvalid(true);
+
+					}else if(!isUploaded1)
+					{
+
+						Notification.show("Please select the file",3000, Position.TOP_CENTER);
+					}
+					uploadedFile = null;
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+				}
+			});
+
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
+		}
+
 	}
 
 }
