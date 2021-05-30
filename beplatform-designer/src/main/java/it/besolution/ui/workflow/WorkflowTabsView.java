@@ -43,6 +43,7 @@ import it.besolution.model.workflow.WorkFlowProperty;
 import it.besolution.model.workflow.WorkFlowRoles;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.utils.CommonUtils;
+import it.besolution.utils.Constants;
 import it.besolution.utils.ScreenFactory;
 
 public class WorkflowTabsView extends VerticalLayout{
@@ -110,8 +111,6 @@ public class WorkflowTabsView extends VerticalLayout{
 	private WorkFlowMaster workflowMasterModel = null;
 
 	private ArrayList<WorkFlowProperty> propertiesList = null;
-
-	private String filePath = "D:\\UploadAtlas\\";
 
 	private String uploadedFile = null; 
 
@@ -1229,7 +1228,7 @@ public class WorkflowTabsView extends VerticalLayout{
 						if(fileMimeType.equalsIgnoreCase("jar")){
 
 
-							outputStream = new FileOutputStream(new File(filePath+fileName));
+							outputStream = new FileOutputStream(new File(Constants.JARS_FILE_PATH+fileName));
 							return outputStream;
 
 
@@ -1252,7 +1251,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			up1.addSucceededListener(suc ->{
 				try {
 
-					uploadedFile = filePath+suc.getFileName();
+					uploadedFile = Constants.JARS_FILE_PATH+suc.getFileName();
 					isUploaded1 = true;
 
 				} catch (Exception e2) {
@@ -1301,7 +1300,7 @@ public class WorkflowTabsView extends VerticalLayout{
 						if(fileMimeType.equalsIgnoreCase("jar")){
 
 
-							outputStream = new FileOutputStream(new File(filePath+fileName));
+							outputStream = new FileOutputStream(new File(Constants.JARS_FILE_PATH+fileName));
 							return outputStream;
 
 
@@ -1326,7 +1325,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			up2.addSucceededListener(suc ->{
 				try {
 
-					uploadedFile = filePath+suc.getFileName();
+					uploadedFile = Constants.JARS_FILE_PATH+suc.getFileName();
 					isUploaded2 = true;
 
 
@@ -1378,7 +1377,7 @@ public class WorkflowTabsView extends VerticalLayout{
 						if(fileMimeType.equalsIgnoreCase("jar")){
 
 
-							outputStream = new FileOutputStream(new File(filePath+fileName));
+							outputStream = new FileOutputStream(new File(Constants.JARS_FILE_PATH+fileName));
 							return outputStream;
 
 						}
@@ -1401,7 +1400,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			up3.addSucceededListener(suc ->{
 				try {
 
-					uploadedFile = filePath+suc.getFileName();
+					uploadedFile = Constants.JARS_FILE_PATH+suc.getFileName();
 					isUploaded3 = true;
 
 				} catch (Exception e2) {
@@ -1451,7 +1450,7 @@ public class WorkflowTabsView extends VerticalLayout{
 						if(fileMimeType.equalsIgnoreCase("jar")){
 
 
-							outputStream = new FileOutputStream(new File(filePath+fileName));
+							outputStream = new FileOutputStream(new File(Constants.JARS_FILE_PATH+fileName));
 							return outputStream;
 
 						}
@@ -1475,7 +1474,7 @@ public class WorkflowTabsView extends VerticalLayout{
 			up4.addSucceededListener(suc ->{
 				try {
 
-					uploadedFile = filePath+suc.getFileName();
+					uploadedFile = Constants.JARS_FILE_PATH+suc.getFileName();
 					isUploaded4 = true;
 
 
