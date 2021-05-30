@@ -2,9 +2,9 @@ package it.besolution.utils;
 
 import com.vaadin.flow.server.VaadinSession;
 
-import it.besolution.ui.HomeView;
 import it.besolution.ui.MainNavigationView;
 import it.besolution.ui.MainView;
+import it.besolution.ui.Home.HomeView;
 import it.besolution.ui.objectclass.ObjectClassFormView;
 import it.besolution.ui.objectclass.ObjectClassGridView;
 import it.besolution.ui.solution.NewSolutionView;

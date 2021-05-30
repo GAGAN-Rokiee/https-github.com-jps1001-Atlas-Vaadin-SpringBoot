@@ -14,6 +14,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 
+import it.besolution.ui.Home.HomePresenter;
 import it.besolution.ui.solution.SolutionModel;
 import it.besolution.ui.solution.SolutionPresenter;
 import it.besolution.utils.CommonUtils;
@@ -55,8 +56,19 @@ public class MainView extends VerticalLayout{
 		registerScreens();
 		createHeader();
 		createContent();
+		getJarsFilePath();
 
 
+	}
+
+	private void getJarsFilePath() {
+		try {
+			Constants.JARS_FILE_PATH = new HomePresenter().getJarsPath();
+
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, MainView.class);
+		}
+		
 	}
 
 	private void registerScreens() {

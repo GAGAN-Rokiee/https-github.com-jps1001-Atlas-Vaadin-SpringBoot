@@ -44,7 +44,7 @@ public class WorkflowApi {
 			API_WORKFLOW_SETTINGS_SAVE = "http://localhost:"+serverPort+"/designer/api/workflow/advanced-setting/save/workflow/{workFlowId}";
 
 		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, SolutionApi.class);
+			CommonUtils.printStakeTrace(e, WorkflowApi.class);
 
 		}
 
