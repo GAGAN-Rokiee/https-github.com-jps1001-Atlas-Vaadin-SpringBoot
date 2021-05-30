@@ -74,9 +74,7 @@ CREATE TABLE IF NOT EXISTS workflow_advanced_settings
 (
     id                   INT AUTO_INCREMENT PRIMARY KEY,
     workflow_id          INT NOT NULL,
-    workflow_advanced_id INT NOT NULL,
     setting_name         VARCHAR(100) NOT NULL,
     setting_value        VARCHAR(100) NOT NULL,
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id),
-    FOREIGN KEY (workflow_advanced_id) REFERENCES workflow_advanced(id)
+    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
 );
