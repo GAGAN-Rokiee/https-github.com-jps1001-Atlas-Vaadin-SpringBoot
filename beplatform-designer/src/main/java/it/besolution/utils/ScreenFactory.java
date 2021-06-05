@@ -2,16 +2,12 @@ package it.besolution.utils;
 
 import com.vaadin.flow.server.VaadinSession;
 
+import it.besolution.ui.HomeView;
 import it.besolution.ui.MainNavigationView;
 import it.besolution.ui.MainView;
-import it.besolution.ui.Home.HomeView;
-import it.besolution.ui.objectclass.ObjectClassFormView;
-import it.besolution.ui.objectclass.ObjectClassGridView;
 import it.besolution.ui.solution.NewSolutionView;
 import it.besolution.ui.solution.SolutionDetailView;
 import it.besolution.ui.solution.SolutionListView;
-import it.besolution.ui.workflow.WorkflowTabsView;
-import it.besolution.ui.workflow.WorkflowView;
 
 public class ScreenFactory {
 
@@ -33,11 +29,7 @@ public class ScreenFactory {
 	public NewSolutionView newSolutionView = null;
 	public MainNavigationView mainNavigationView = null;
 	public SolutionDetailView solutionDetailView = null;
-	public ObjectClassGridView objectClassGridView = null;
-	public ObjectClassFormView objectClassFormView = null;
-	public WorkflowView workflowView = null;
-	public WorkflowTabsView workflowTabsView = null;
-	
+
 	public Object getScreen(int screenId) {
 
 		switch (screenId) {
@@ -71,26 +63,7 @@ public class ScreenFactory {
 				solutionDetailView =  new SolutionDetailView();
 			}
 			return solutionDetailView;		
-		case 7:
-			if(null == objectClassGridView) {
-				objectClassGridView =  new ObjectClassGridView();
-			}
-			return objectClassGridView;	
-		case 8:
-			if(null == objectClassFormView) {
-				objectClassFormView =  new ObjectClassFormView();
-			}
-			return objectClassFormView;	
-		case 9:
-			if(null == workflowView) {
-				workflowView =  new WorkflowView();
-			}
-			return workflowView;	
-		case 10:
-			if(null == workflowTabsView) {
-				workflowTabsView =  new WorkflowTabsView();
-			}
-			return workflowTabsView;	
+			
 
 		default:
 			return null;

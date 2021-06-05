@@ -1,23 +1,25 @@
 package it.besolution.repository;
 
+
 import java.sql.Date;
+import java.util.Collections;
 import java.util.List;
 
+
 import it.besolution.mapper.SolutionMapper;
+import it.besolution.model.Solution;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import it.besolution.dto.SolutionDto;
-import it.besolution.mapper.SolutionDtoMapper;
-import it.besolution.model.Solution;
+
 
 @Repository
 public class SolutionRepository {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectClassRepository.class);
+	private static final Logger LOG = LoggerFactory.getLogger(SolutionRepository.class);
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -45,16 +47,16 @@ public class SolutionRepository {
 		return solution;
 	}
 
-	public List<SolutionDto> getAllSolutions() throws Exception {
+	public List<Solution> getAllSolutions() throws Exception {
 
 		String sql = "SELECT * FROM solutions";
 		LOG.info("Query: {}", sql);
 
 		try {
-			return jdbcTemplate.query(sql, new SolutionDtoMapper());
+			return jdbcTemplate.query(sql, new SolutionMapper());
 		} catch (Exception ex) {
 			LOG.error("Cannot fetch solution. Error :",ex);
-			throw new Exception(ex);
+			return Collections.emptyList();
 		}
 	}
 
@@ -67,7 +69,7 @@ public class SolutionRepository {
 			return jdbcTemplate.queryForObject(sql, new SolutionMapper());
 		} catch (Exception ex) {
 			LOG.error("Cannot fetch solution. Error :",ex);
-			throw new Exception(ex);
+			return null;
 		}
 	}
 	
@@ -87,7 +89,7 @@ public class SolutionRepository {
 
 		} catch (Exception ex) {
             LOG.error("Cannot update the solution with template name: {}", solution.getTemplateName());
-			throw new Exception(ex);
+			return null;
 		}
 		return solution;
 	}
