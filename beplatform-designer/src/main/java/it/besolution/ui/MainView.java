@@ -86,6 +86,11 @@ public class MainView extends VerticalLayout{
 			ScreenFactory.getInstance().getScreen(9);
 			ScreenFactory.getInstance().getScreen(10);
 			
+			// Begin - Vikrant Thakur
+			ScreenFactory.getInstance().getScreen(11);
+			ScreenFactory.getInstance().getScreen(12);
+			// End - Vikrant Thakur
+			
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainView.class);
 		}

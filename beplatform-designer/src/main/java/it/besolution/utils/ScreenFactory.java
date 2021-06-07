@@ -7,6 +7,8 @@ import it.besolution.ui.MainView;
 import it.besolution.ui.Home.HomeView;
 import it.besolution.ui.objectclass.ObjectClassFormView;
 import it.besolution.ui.objectclass.ObjectClassGridView;
+import it.besolution.ui.propertydefinition.PropertyDefinitionForm;
+import it.besolution.ui.propertydefinition.PropertyDefinitionGridView;
 import it.besolution.ui.solution.NewSolutionView;
 import it.besolution.ui.solution.SolutionDetailView;
 import it.besolution.ui.solution.SolutionListView;
@@ -15,17 +17,15 @@ import it.besolution.ui.workflow.WorkflowView;
 
 public class ScreenFactory {
 
-	private ScreenFactory() {}
-
-	public static ScreenFactory getInstance() 
-	{
-		if (VaadinSession.getCurrent().getAttribute(Constants.CURRENT_USER_SCREEN) == null) 
-		{
-			VaadinSession.getCurrent().setAttribute(Constants.CURRENT_USER_SCREEN, new ScreenFactory());
-		}
-		return (ScreenFactory)VaadinSession.getCurrent().getAttribute(Constants.CURRENT_USER_SCREEN);
+	private ScreenFactory() {
 	}
 
+	public static ScreenFactory getInstance() {
+		if (VaadinSession.getCurrent().getAttribute(Constants.CURRENT_USER_SCREEN) == null) {
+			VaadinSession.getCurrent().setAttribute(Constants.CURRENT_USER_SCREEN, new ScreenFactory());
+		}
+		return (ScreenFactory) VaadinSession.getCurrent().getAttribute(Constants.CURRENT_USER_SCREEN);
+	}
 
 	public MainView mainview = null;
 	public HomeView homeView = null;
@@ -35,62 +35,79 @@ public class ScreenFactory {
 	public SolutionDetailView solutionDetailView = null;
 	public ObjectClassGridView objectClassGridView = null;
 	public ObjectClassFormView objectClassFormView = null;
+
+	// Begin - Vikrant Thakur
+	public PropertyDefinitionGridView propertyDefinitionGridView = null;
+	public PropertyDefinitionForm propertyDefinitionForm = null;
+	// End - Vikrant Thakur
+
 	public WorkflowView workflowView = null;
 	public WorkflowTabsView workflowTabsView = null;
-	
+
 	public Object getScreen(int screenId) {
 
 		switch (screenId) {
 		case 1:
-			if(null == mainview) {
-				mainview =  new MainView();
+			if (null == mainview) {
+				mainview = new MainView();
 			}
 			return mainview;
 		case 2:
-			if(null == homeView) {
-				homeView =  new HomeView();
+			if (null == homeView) {
+				homeView = new HomeView();
 			}
 			return homeView;
 		case 3:
-			if(null == solutionListView) {
-				solutionListView =  new SolutionListView();
+			if (null == solutionListView) {
+				solutionListView = new SolutionListView();
 			}
 			return solutionListView;
 		case 4:
-			if(null == newSolutionView) {
-				newSolutionView =  new NewSolutionView();
+			if (null == newSolutionView) {
+				newSolutionView = new NewSolutionView();
 			}
 			return newSolutionView;
 		case 5:
-			if(null == mainNavigationView) {
-				mainNavigationView =  new MainNavigationView();
+			if (null == mainNavigationView) {
+				mainNavigationView = new MainNavigationView();
 			}
 			return mainNavigationView;
 		case 6:
-			if(null == solutionDetailView) {
-				solutionDetailView =  new SolutionDetailView();
+			if (null == solutionDetailView) {
+				solutionDetailView = new SolutionDetailView();
 			}
-			return solutionDetailView;		
+			return solutionDetailView;
 		case 7:
-			if(null == objectClassGridView) {
-				objectClassGridView =  new ObjectClassGridView();
+			if (null == objectClassGridView) {
+				objectClassGridView = new ObjectClassGridView();
 			}
-			return objectClassGridView;	
+			return objectClassGridView;
 		case 8:
-			if(null == objectClassFormView) {
-				objectClassFormView =  new ObjectClassFormView();
+			if (null == objectClassFormView) {
+				objectClassFormView = new ObjectClassFormView();
 			}
-			return objectClassFormView;	
+			return objectClassFormView;
 		case 9:
-			if(null == workflowView) {
-				workflowView =  new WorkflowView();
+			if (null == workflowView) {
+				workflowView = new WorkflowView();
 			}
-			return workflowView;	
+			return workflowView;
 		case 10:
-			if(null == workflowTabsView) {
-				workflowTabsView =  new WorkflowTabsView();
+			if (null == workflowTabsView) {
+				workflowTabsView = new WorkflowTabsView();
 			}
-			return workflowTabsView;	
+			return workflowTabsView;
+
+		case 11:
+			if (null == propertyDefinitionGridView) {
+				propertyDefinitionGridView = new PropertyDefinitionGridView();
+			}
+			return propertyDefinitionGridView;
+		case 12:
+			if (null == propertyDefinitionForm) {
+				propertyDefinitionForm = new PropertyDefinitionForm();
+			}
+			return propertyDefinitionForm;
 
 		default:
 			return null;

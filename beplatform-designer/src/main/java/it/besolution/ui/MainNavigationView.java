@@ -98,6 +98,17 @@ public class MainNavigationView extends HorizontalLayout {
 
 			Button btnProp= new Button("Property definatons");
 			btnProp.addClassName("btnNav");
+			btnProp.addClickListener(event -> {
+				try {
+
+					ScreenFactory.getInstance().propertyDefinitionGridView.populateData();
+					panel.setContent(ScreenFactory.getInstance().propertyDefinitionGridView);
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, MainNavigationView.class);
+
+				}
+			});
 
 			Button btnCnt= new Button("Counters");
 			btnCnt.addClassName("btnNav");
