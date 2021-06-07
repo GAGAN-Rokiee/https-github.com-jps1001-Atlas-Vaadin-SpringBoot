@@ -10,11 +10,13 @@ import java.util.Map;
 import org.apache.commons.io.output.NullOutputStream;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
@@ -46,6 +48,7 @@ import it.besolution.utils.CommonUtils;
 import it.besolution.utils.Constants;
 import it.besolution.utils.ScreenFactory;
 
+@JsModule("./src/customBPMN.js")
 public class WorkflowTabsView extends VerticalLayout{
 
 	/**
@@ -203,7 +206,7 @@ public class WorkflowTabsView extends VerticalLayout{
 				if(event.getSelectedTab().equals(tabAdvanced)) {
 					loadTabData(ADVANCED_TAB);
 				}
-				
+
 				panel.setContent(tabsToPages.get(tabs.getSelectedTab()));
 				
 			});
@@ -313,29 +316,10 @@ public class WorkflowTabsView extends VerticalLayout{
 
 
 		try {
+			
+			WorkflowFlowView workflowFlowView =  new WorkflowFlowView();
 
-			VerticalLayout vLayoutView = new VerticalLayout();
-			vLayoutView.setSizeFull();
-			vLayoutView.setMargin(false);
-			vLayoutView.setPadding(false);
-
-			HorizontalLayout hLayoutHeader = new HorizontalLayout();
-			hLayoutHeader.setWidthFull();
-			hLayoutHeader.setMargin(false);
-			hLayoutHeader.setPadding(false);
-
-			H3 lblPageTitle = new H3("Workflow Flow");
-			lblPageTitle.getStyle().set("flex-grow", "1");
-
-			Button btnNew  = new Button("New");
-			btnNew.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
-
-			hLayoutHeader.add(lblPageTitle,btnNew);
-
-
-			vLayoutView.add(hLayoutHeader);
-
-			pageFlow.add(vLayoutView);
+			pageFlow.add(workflowFlowView);
 
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, WorkflowTabsView.class);
@@ -977,13 +961,14 @@ public class WorkflowTabsView extends VerticalLayout{
 				tfDynamicProperty.setItems(propertiesList);
 
 				break;
-			case "flow":
-
-				break;
 			case "roles":
 
 				ArrayList<WorkFlowRoles> roles = new WorkflowPresenter().getWorkflowRoles(workflowMasterModel);
 				gridRoles.setItems(roles);
+
+				break;
+			case "flow":
+
 
 				break;
 			case "advanced":
