@@ -55,6 +55,7 @@ public class SolutionListView extends VerticalLayout {
 				try {
 
 					ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().newSolutionView);
+					
 
 				} catch (Exception e) {
 					CommonUtils.printStakeTrace(e, SolutionListView.class);
@@ -112,6 +113,7 @@ public class SolutionListView extends VerticalLayout {
 					vLayoutTemplate.addClickListener(event -> {
 						try {
 
+							ScreenFactory.getInstance().mainview.showNavigationMenu();
 							VaadinSession.getCurrent().setAttribute(Constants.SOLUTION_MODEL, solution);
 							ScreenFactory.getInstance().solutionDetailView.setData(solution);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
