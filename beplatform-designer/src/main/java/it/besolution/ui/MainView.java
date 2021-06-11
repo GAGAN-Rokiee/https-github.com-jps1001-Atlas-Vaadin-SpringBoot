@@ -7,6 +7,7 @@ import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.Scroller;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -45,6 +46,7 @@ public class MainView extends VerticalLayout{
 	private Scroller panel = null;
 	private Icon icoMenu = null;
 	private Icon icoSettings = null;
+	private Icon icoNavigationMenu = null;
 
 	public MainView() {
 
@@ -68,7 +70,7 @@ public class MainView extends VerticalLayout{
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainView.class);
 		}
-		
+
 	}
 
 	private void registerScreens() {
@@ -85,7 +87,7 @@ public class MainView extends VerticalLayout{
 			ScreenFactory.getInstance().getScreen(8);
 			ScreenFactory.getInstance().getScreen(9);
 			ScreenFactory.getInstance().getScreen(10);
-			
+
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainView.class);
 		}
@@ -137,6 +139,24 @@ public class MainView extends VerticalLayout{
 			lblTitle.getStyle().set("color", "white");
 			lblTitle.getStyle().set("margin-right", "auto");
 
+			icoNavigationMenu = VaadinIcon.ALIGN_JUSTIFY.create();
+			icoNavigationMenu.setSize("1.5rem");
+			icoNavigationMenu.setColor("azure");
+			icoNavigationMenu.setVisible(false);
+			icoNavigationMenu.getStyle().set("cursor", "pointer");
+			icoNavigationMenu.getStyle().set("padding-top", "0.5rem");
+
+			icoNavigationMenu.addClickListener(event -> {
+				try {
+
+					ScreenFactory.getInstance().mainNavigationView.hideShowSideMenu();
+
+				} catch (Exception e) {
+					CommonUtils.printStakeTrace(e, MainView.class);
+				}
+
+			});
+
 			icoMenu = CustomIcon.MENU.create();
 			icoMenu.setSize("2rem");
 			icoMenu.setColor("white");
@@ -150,6 +170,7 @@ public class MainView extends VerticalLayout{
 
 					ScreenFactory.getInstance().solutionListView.addTemplates(solutionList);
 					panel.setContent(ScreenFactory.getInstance().solutionListView);
+					icoNavigationMenu.setVisible(false);
 
 				} catch (Exception e) {
 					CommonUtils.printStakeTrace(e, MainView.class);
@@ -164,14 +185,26 @@ public class MainView extends VerticalLayout{
 			icoSettings.getStyle().set("cursor", "pointer");
 
 
-			headerLayout.add(lblTitle,icoMenu,icoSettings);
+			headerLayout.add(icoNavigationMenu,lblTitle,icoMenu,icoSettings);
 			headerLayout.setDefaultVerticalComponentAlignment(Alignment.CENTER);
-
 
 			add(headerLayout);
 
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainView.class);
+		}
+
+	}
+
+	public void showNavigationMenu() {
+
+		try {
+
+			icoNavigationMenu.setVisible(true);
+
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, MainView.class);
+
 		}
 
 	}
