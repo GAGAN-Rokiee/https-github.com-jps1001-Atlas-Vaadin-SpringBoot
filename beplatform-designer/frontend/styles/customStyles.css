@@ -43,20 +43,21 @@
 .navIco{
 	width: 16px;
 	color: white;
-	cursor: pointer;
 }
 .navLbl{
 	color: white;
-	cursor: pointer;
 }
 .btnNavSol{
 	background: transparent;
 	color: white;
-	width: 100%;
 }
 .btnNav{
 	background: transparent;
 	color: white;
+<<<<<<< HEAD:beplatform-designer/frontend/styles/customStyles.css
+	margin: 0px;
+}
+=======
 	margin: 0rem 0rem 0rem 2rem;
 	cursor: pointer;
 }
@@ -64,15 +65,4 @@
 	color: red;
 	font-size: 14px;
 }
-.layoutBox{
-	border: 1px solid black;
-}
-.btnTab{
-	background: transparent;
-	color: green;
-	border-radius: 0px;
-	border-right: 1px solid green;
-}
-.selected{
-	color: green;
-}
+>>>>>>> master:beplatform-designer/frontend/themes/myapp/views/customStyles.css
