@@ -21,6 +21,8 @@ public class MainNavigationView extends HorizontalLayout {
 	private static final long serialVersionUID = 1L;
 
 	private Scroller panel = null;
+	private Scroller scroller = null;
+	private boolean isHide = false;
 
 
 	public MainNavigationView() {
@@ -33,7 +35,7 @@ public class MainNavigationView extends HorizontalLayout {
 	private void createMenu() {
 		try {
 
-			Scroller scroller = new Scroller();
+			scroller = new Scroller();
 			scroller.addClassName("rightNavigationLayout");
 			scroller.setWidth("20%");
 
@@ -50,7 +52,7 @@ public class MainNavigationView extends HorizontalLayout {
 			lblSol.addClassName("navLbl");
 
 			hLayoutSol.add(IcoSol,lblSol);
-			
+
 			hLayoutSol.addClickListener(x -> {
 				try {
 					panel.setContent(ScreenFactory.getInstance().solutionDetailView);
@@ -156,7 +158,7 @@ public class MainNavigationView extends HorizontalLayout {
 
 			HorizontalLayout hLayoutWrkFlw = new HorizontalLayout();
 			hLayoutWrkFlw.setWidthFull();
-			
+
 			Icon icoWrkFlw = CustomIcon.PLAY.create();
 			icoWrkFlw.addClassName("navIco");
 
@@ -167,13 +169,13 @@ public class MainNavigationView extends HorizontalLayout {
 
 			Button btnWrkFlw= new Button("Workflows");
 			btnWrkFlw.addClassName("btnNav");
-			
+
 			btnWrkFlw.addClickListener(x -> {
 				try {
-					
+
 					ScreenFactory.getInstance().workflowView.populateWorkflows();
 					panel.setContent(ScreenFactory.getInstance().workflowView);
-					
+
 				} catch (Exception e) {
 					CommonUtils.printStakeTrace(e, MainNavigationView.class);
 				}
@@ -222,6 +224,21 @@ public class MainNavigationView extends HorizontalLayout {
 		} catch (Exception e) {
 			CommonUtils.printStakeTrace(e, MainNavigationView.class);
 
+		}
+
+	}
+
+	public void hideShowSideMenu() {
+		try {
+			if(!isHide) {
+				scroller.setVisible(false);
+				isHide = true;
+			}else {
+				scroller.setVisible(true);
+				isHide = false;
+			}
+		} catch (Exception e) {
+			CommonUtils.printStakeTrace(e, MainNavigationView.class);
 		}
 
 	}

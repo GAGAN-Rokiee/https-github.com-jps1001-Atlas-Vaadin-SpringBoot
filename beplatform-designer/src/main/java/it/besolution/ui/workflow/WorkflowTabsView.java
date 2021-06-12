@@ -10,7 +10,6 @@ import java.util.Map;
 import org.apache.commons.io.output.NullOutputStream;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -126,6 +125,8 @@ public class WorkflowTabsView extends VerticalLayout{
 	private TextField tfUp2 = null;
 	private TextField tfUp3 = null;
 	private TextField tfUp4 = null;
+	
+	private WorkflowFlowView workflowFlowView = null;
 
 	public WorkflowTabsView(){
 
@@ -206,7 +207,9 @@ public class WorkflowTabsView extends VerticalLayout{
 				if(event.getSelectedTab().equals(tabAdvanced)) {
 					loadTabData(ADVANCED_TAB);
 				}
-
+				if(event.getSelectedTab().equals(tabFlow)) {
+					loadTabData(FLOW_TAB);
+				}
 				panel.setContent(tabsToPages.get(tabs.getSelectedTab()));
 				
 			});
@@ -317,8 +320,8 @@ public class WorkflowTabsView extends VerticalLayout{
 
 		try {
 			
-			WorkflowFlowView workflowFlowView =  new WorkflowFlowView();
-
+			 workflowFlowView =  new WorkflowFlowView();
+			
 			pageFlow.add(workflowFlowView);
 
 		} catch (Exception e) {
@@ -969,6 +972,7 @@ public class WorkflowTabsView extends VerticalLayout{
 				break;
 			case "flow":
 
+				workflowFlowView.setData(workflowMasterModel);
 
 				break;
 			case "advanced":
