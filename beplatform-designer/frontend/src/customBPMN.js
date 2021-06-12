@@ -112,7 +112,6 @@ window.getUsrStgIDValue = function(){
 window.reset = function(){
 	 stgIDValue = null;
 	 stgNameValue = null;
-     console.log("reset Called"+stgNameValue );
 
 }
 
