@@ -1,4 +1,0 @@
-:host([theme~="newSolutionRadioButton"]) [part="label"] {
-    font-size: 18px;
-    margin-top: 16px;
-}
