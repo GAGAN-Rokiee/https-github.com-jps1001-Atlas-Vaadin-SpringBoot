@@ -64,3 +64,15 @@
 	color: red;
 	font-size: 14px;
 }
+.layoutBox{
+	border: 1px solid black;
+}
+.btnTab{
+	background: transparent;
+	color: green;
+	border-radius: 0px;
+	border-right: 1px solid green;
+}
+.selected{
+	color: green;
+}

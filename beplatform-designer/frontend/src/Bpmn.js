@@ -57123,7 +57123,7 @@
 	Modeler.prototype._interactionModules = [
 
 	  // non-modeling components
-	  KeyboardMoveModule,
+	 // KeyboardMoveModule,
 	  MoveCanvasModule,
 	  TouchModule$1,
 	  ZoomScrollModule
@@ -57146,8 +57146,8 @@
 	  EditorActionsModule$1,
 	  GridSnappingModule$1,
 	  InteractionEventsModule$1,
-	  KeyboardModule$1,
-	  KeyboardMoveSelectionModule,
+	 // KeyboardModule$1,
+	 // KeyboardMoveSelectionModule,
 	  LabelEditingModule,
 	  ModelingModule,
 	  MoveModule,

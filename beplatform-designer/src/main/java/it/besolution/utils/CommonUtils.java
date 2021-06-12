@@ -3,6 +3,8 @@ package it.besolution.utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vaadin.flow.component.notification.Notification;
+
 
 public class CommonUtils {
 
@@ -49,5 +51,20 @@ public class CommonUtils {
 
 	}
 	
+	@SuppressWarnings("static-access")
+	public static void showSuccessMsg(String Msg) {
+		
+		Notification notf = new Notification();
+		notf.show(Msg);
+
+	}
+	
+	@SuppressWarnings("static-access")
+	public static void showErrorMsg(String Msg) {
+		
+		Notification notf = new Notification();
+		notf.show(Msg);
+
+	}
 
 }
