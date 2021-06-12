@@ -54,5 +54,15 @@
 .btnNav{
 	background: transparent;
 	color: white;
+<<<<<<< HEAD:beplatform-designer/frontend/styles/customStyles.css
 	margin: 0px;
 }
+=======
+	margin: 0rem 0rem 0rem 2rem;
+	cursor: pointer;
+}
+.lblError{
+	color: red;
+	font-size: 14px;
+}
+>>>>>>> master:beplatform-designer/frontend/themes/myapp/views/customStyles.css

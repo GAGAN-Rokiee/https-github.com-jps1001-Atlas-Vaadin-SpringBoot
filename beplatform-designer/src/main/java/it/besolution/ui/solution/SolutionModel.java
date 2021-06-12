@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class SolutionModel {
 
-	private String id;
+	private int id;
 
 	private String templateName;
 
