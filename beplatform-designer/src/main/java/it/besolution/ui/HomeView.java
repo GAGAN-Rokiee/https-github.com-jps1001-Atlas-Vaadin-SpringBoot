@@ -1,4 +1,4 @@
-package it.besolution.ui.Home;
+package it.besolution.ui;
 
 import com.vaadin.flow.component.html.H4;
 import com.vaadin.flow.component.html.Label;

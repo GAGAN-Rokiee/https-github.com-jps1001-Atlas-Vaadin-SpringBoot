@@ -1,7 +1,7 @@
 import BpmnJS from "./Bpmn.js";
 var bpmnModeler;
-
-
+var stgIDValue;
+var stgNameValue;
 /**
  * Save diagram contents and print them to the console.
  */
@@ -76,37 +76,20 @@ window.openDiagram = function(){
 
 		eventBus.on("element.click", function(event) {
 
-			console.log(event.element.type);
 			if(event.element.type === "bpmn:StartEvent"){
 
 				document.getElementById("btnUsrStg").click();
 
-				var stgID =  document.getElementById("bpmnUsrStgID");
-				var stgName = document.getElementById("bpmnUsrStgName");
-
-				if(typeof stgID !== null && stgID !== 'undefined' && stgID !== null && stgName !== null  && typeof stgName !== null && stgName !== 'undefined'){
-
-					document.getElementById("bpmnUsrStgID").style.visibility = "hidden"; 
-					document.getElementById("bpmnUsrStgName").style.visibility = "hidden"; 
-					document.getElementById("bpmnUsrStgID").innerHTML = event.element.id;
-					document.getElementById("bpmnUsrStgName").innerHTML = event.element.type;
-				}
+				stgIDValue  = event.element.id;
+				stgNameValue  = event.element.type;
 
 			}
 			if(event.element.type === "bpmn:Task"){
 
 				document.getElementById("btnSysStg").click();
 
-				var stgID =  document.getElementById("bpmnSysStgID");
-				var stgName = document.getElementById("bpmnSysStgName");
-
-				if(typeof stgID !== null && stgID !== 'undefined' && stgID !== null && stgName !== null  && typeof stgName !== null && stgName !== 'undefined'){
-					document.getElementById("bpmnSysStgID").innerHTML = event.element.id;
-					document.getElementById("bpmnSysStgName").innerHTML = event.element.type;
-					document.getElementById("bpmnSysStgID").style.visibility = "hidden"; 
-					document.getElementById("bpmnSysStgName").style.visibility = "hidden"; 
-				}
-
+				stgIDValue  = event.element.id;
+				stgNameValue  = event.element.type;
 
 			}
 
@@ -116,5 +99,20 @@ window.openDiagram = function(){
 	}catch(e){
 		console.error('error in load bpmn module', e);
 	}
+}
+
+window.getUsrStgNameValue = function(){
+	return stgNameValue;
+}
+
+window.getUsrStgIDValue = function(){
+	return stgIDValue;
+}
+
+window.reset = function(){
+	 stgIDValue = null;
+	 stgNameValue = null;
+     console.log("reset Called"+stgNameValue );
+
 }
 

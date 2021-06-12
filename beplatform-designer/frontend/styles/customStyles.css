@@ -1,4 +1,4 @@
-.buttonLayoutGreen {
+.buttonLayoutGreen{
 	height: 12.5rem;
 	width: 20%;
 	background: #15c15d;
@@ -8,7 +8,7 @@
 	font-size: large;
 }
 
-.buttonLayoutBlue {
+.buttonLayoutBlue{
 	height: 12.5rem;
 	width: 20%;
 	background: #1676f3;
@@ -18,68 +18,51 @@
 	font-size: large;
 }
 
-.header {
+.header{
 	background: #343434;
+	
 }
-
-.solutionTemplate {
+.solutionTemplate{
 	background: #15c15d;
 	color: white;
 	border-radius: 10px;
 }
-
-.rightNavigationLayout {
+.rightNavigationLayout{
 	background: #3e3e3e;
 }
 
-.chkBxIcon {
+.chkBxIcon{
 	background: white;
 	height: 20px;
 	width: 20px;
 	border-radius: 10px;
 }
-
-.lblSolutionDtl {
+.lblSolutionDtl{
 	font-size: 20px;
 }
-
-.navIco {
+.navIco{
 	width: 16px;
 	color: white;
-	cursor: pointer;
 }
-
-.navLbl {
+.navLbl{
 	color: white;
-	cursor: pointer;
 }
-
-.btnNavSol {
+.btnNavSol{
 	background: transparent;
 	color: white;
-	width: 100%;
 }
-
-.btnNav {
+.btnNav{
 	background: transparent;
 	color: white;
+<<<<<<< HEAD:beplatform-designer/frontend/styles/customStyles.css
+	margin: 0px;
+}
+=======
 	margin: 0rem 0rem 0rem 2rem;
 	cursor: pointer;
 }
-
-.lblError {
+.lblError{
 	color: red;
 	font-size: 14px;
 }
-.layoutBox{
-	border: 1px solid black;
-}
-.btnTab{
-	background: transparent;
-	color: green;
-	border-radius: 0px;
-	border-right: 1px solid green;
-}
-.selected{
-	color: green;
-}
+>>>>>>> master:beplatform-designer/frontend/themes/myapp/views/customStyles.css
