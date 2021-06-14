@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vaadin.flow.server.VaadinSession;
 
-import it.besolution.api.ObjectClassApi;
+import it.besolution.api.PropertyDefinitionApi;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.ui.solution.SolutionModel;
 import it.besolution.utils.CommonUtils;
@@ -26,25 +26,26 @@ import it.besolution.utils.Constants;
 public class PropertyDefinitionPresenter {
 
 
-	public ArrayList<PropertyDefinitionModel> getObjectClasses() {
-		ArrayList<PropertyDefinitionModel> listOfObjectClasses = new ArrayList<PropertyDefinitionModel>();
+	public ArrayList<PropertyDefinitionModel> getPropertyDefinitions(int objectClassId) {
+		ArrayList<PropertyDefinitionModel> propertyDefinitionModels = new ArrayList<PropertyDefinitionModel>();
 
 		try {
 
 			SolutionModel solutionModel = (SolutionModel) VaadinSession.getCurrent().getAttribute(Constants.SOLUTION_MODEL);
-
+			
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
 			params.put("solutionId", solutionModel.getId());
-
+			params.put("objectClassId", objectClassId);
+			
 			RestTemplate restTemplate = new RestTemplate();
-			String objects  = restTemplate.getForObject(ObjectClassApi.API_OBJECT_CLASS_GET,String.class,params);
+			String objects  = restTemplate.getForObject(PropertyDefinitionApi.API_PROPERTY_DEFINITION_GET,String.class,params);
 
 			JSONObject obj = new  JSONObject(objects);
 			JSONArray data = obj.getJSONArray("data");
 
 			ObjectMapper objectMapper = new ObjectMapper();
 			objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			listOfObjectClasses = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<PropertyDefinitionModel>>(){});
+			propertyDefinitionModels = objectMapper.readValue(data.toString(), new TypeReference<ArrayList<PropertyDefinitionModel>>(){});
 
 
 		} catch (Exception e) {
@@ -52,22 +53,23 @@ public class PropertyDefinitionPresenter {
 
 
 		}
-		return listOfObjectClasses;
+		return propertyDefinitionModels;
 	}
 
-	public ApiRestResponse  createNewObjectClass(PropertyDefinitionModel newObject) {
+	public ApiRestResponse  createNewPropertyDefinition(PropertyDefinitionModel newPropertyDefinition) {
 		ApiRestResponse restResponse = new ApiRestResponse();
 
 		try {
 			RestTemplate restTemplate = new RestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-			HttpEntity<PropertyDefinitionModel> entity = new HttpEntity<PropertyDefinitionModel>(newObject,headers);
+			HttpEntity<PropertyDefinitionModel> entity = new HttpEntity<PropertyDefinitionModel>(newPropertyDefinition,headers);
 
 			HashMap<String, Integer> params = new HashMap<String, Integer>();
-			params.put("solutionId", newObject.getSolutionId());
-
-			String response = restTemplate.exchange(ObjectClassApi.API_OBJECT_CLASS_NEW, HttpMethod.POST, entity, String.class,params).getBody();
+			params.put("solutionId", newPropertyDefinition.getSolutionId());
+			params.put("objectClassId", newPropertyDefinition.getObjectClassId());
+			
+			String response = restTemplate.exchange(PropertyDefinitionApi.API_PROPERTY_DEFINITION_NEW, HttpMethod.POST, entity, String.class,params).getBody();
 
 			JSONObject obj = new  JSONObject(response);
 

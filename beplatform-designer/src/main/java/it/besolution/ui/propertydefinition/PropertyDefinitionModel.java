@@ -1,5 +1,7 @@
 package it.besolution.ui.propertydefinition;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,32 +13,19 @@ import lombok.ToString;
 @ToString
 public class PropertyDefinitionModel {
 
-	private String basePath = "";
-	private int baseType;
-	private String className;
-	
-	private int classType;
-	private String classTypeDesc;
-	
-	private String counterName;
-	
-	private boolean cryptoContent = false;
-	private String cryptoContentDesc;
-	
-	private String defaultWorkflow;
-	private String description;
-	private String entityName;
-	
-	private boolean securityEnabled;
-	private String securityEnabledDesc;
-
+	private int id;
 	private int solutionId;
-	private String storageType;
-	
-	private boolean systemClass;
-	private String systemClassDesc;
-	
-	private boolean hasContent;
-	private String hasContentDesc;
+	private int objectClassId;
+	private String propertyName;
+	private String propertyType;
+	private String label;
+	private String constraintKey;
+	private String constraintValue;
+	private boolean propertyIsNull = Boolean.FALSE;
+	private String defaultValue;
+	private Date lastUpdated = new Date();
+	private boolean toUpdate;
+	private boolean toDelete;
+	private String objectClassName;
 
 }

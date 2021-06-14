@@ -23,7 +23,7 @@ public class Property {
     private String constraintValue;
     private Boolean propertyIsNull = Boolean.FALSE;
     private String defaultValue;
-    private Date lastUpdated;
+    private Date lastUpdated = new Date();
     private Boolean toUpdate;
     private Boolean toDelete;
     private String objectClassName;
