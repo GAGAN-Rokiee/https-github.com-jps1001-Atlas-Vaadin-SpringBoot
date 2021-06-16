@@ -1,13 +1,11 @@
 package it.besolution.service;
 
-import java.util.List;
-
+import it.besolution.model.Solution;
+import it.besolution.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import it.besolution.dto.SolutionDto;
-import it.besolution.model.Solution;
-import it.besolution.repository.SolutionRepository;
+import java.util.List;
 
 @Service
 public class SolutionService {
@@ -19,7 +17,7 @@ public class SolutionService {
 		return solutionRepository.save(solution);
 	}
 
-	public List<SolutionDto> getSolution() throws Exception{
+	public List<Solution> getSolution() throws Exception{
 		return solutionRepository.getAllSolutions();
 	}
 	

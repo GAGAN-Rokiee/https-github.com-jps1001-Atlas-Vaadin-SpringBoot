@@ -28,48 +28,34 @@ CREATE TABLE IF NOT EXISTS object_class
     FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS workflow_master
+
+
+CREATE TABLE IF NOT EXISTS form_master
 (
     id            INT AUTO_INCREMENT PRIMARY KEY,
-    solution_id   INT NOT NULL,
-    name          VARCHAR(100) NOT NULL,
-    prefix        VARCHAR(50) NOT NULL,
-    description   VARCHAR(500) NULL,
+    object_class_id      INT NOT NULL,
+    label        VARCHAR(255)  NULL,
+    object_class_name   VARCHAR(255) NULL,
+    registry   VARCHAR(255) NULL,
+    file_name   VARCHAR(255) NOT NULL,
+    last_updated  TIMESTAMP   NOT NULL DEFAULT CURRENT_DATE,
+    solution_id INT NOT NULL,
+   FOREIGN KEY (object_class_id) REFERENCES object_class(id) ON UPDATE NO ACTION ON DELETE CASCADE,
+   FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS form_attributes
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    master_id      INT NOT NULL,
+    attribute_name        VARCHAR(255) NOT NULL,
+    attribute_value        VARCHAR(255) NOT NULL,
     last_updated  TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
-    FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
-);
+   FOREIGN KEY (master_id) REFERENCES form_master(id) ON UPDATE NO ACTION ON DELETE CASCADE
+   );
 
-CREATE TABLE IF NOT EXISTS workflow_property
-(
-    id            INT AUTO_INCREMENT PRIMARY KEY,
-    workflow_id   INT NOT NULL,
-    property_name VARCHAR(100) NOT NULL,
-    property_type VARCHAR(50) NOT NULL,
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
-);
-
-CREATE TABLE IF NOT EXISTS workflow_role
-(
-    id                   INT AUTO_INCREMENT PRIMARY KEY,
-    workflow_id          INT NOT NULL,
-    role_name            VARCHAR(100) NOT NULL,
-    workflow_property_id INT NOT NULL,
-    is_dynamic           INT NOT NULL DEFAULT 0,
-    is_created           INT NOT NULL DEFAULT 0,
-    FOREIGN KEY (workflow_property_id) REFERENCES workflow_property(id),
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
-);
-
-CREATE TABLE IF NOT EXISTS workflow_advanced
-(
-    id                   INT AUTO_INCREMENT PRIMARY KEY,
-    workflow_id          INT NOT NULL,
-    jar_type             VARCHAR(10) NOT NULL,
-    jar_class            VARCHAR(100) NOT NULL,
-    jar_path             VARCHAR(100) NOT NULL,
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
-);
-
+   
+   
 CREATE TABLE IF NOT EXISTS PROPERTY
 (
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,14 +73,6 @@ CREATE TABLE IF NOT EXISTS PROPERTY
     FOREIGN KEY (object_class_id) REFERENCES object_class(id) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS workflow_advanced_settings
-(
-    id                   INT AUTO_INCREMENT PRIMARY KEY,
-    workflow_id          INT NOT NULL,
-    setting_name         VARCHAR(100) NOT NULL,
-    setting_value        VARCHAR(100) NOT NULL,
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
-);
 CREATE TABLE IF NOT EXISTS counter
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
@@ -102,4 +80,5 @@ CREATE TABLE IF NOT EXISTS counter
     counter_name     VARCHAR(100) not NULL,
     last_updated     TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
+
 );
