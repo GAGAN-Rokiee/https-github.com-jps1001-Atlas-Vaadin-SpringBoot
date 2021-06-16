@@ -1,9 +1,11 @@
 package it.besolution.ui.solution;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -19,12 +21,10 @@ import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
 import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.server.VaadinSession;
 
 import it.besolution.model.Solution;
 import it.besolution.rest.ApiRestResponse;
 import it.besolution.utils.CommonUtils;
-import it.besolution.utils.Constants;
 import it.besolution.utils.CustomIcon;
 import it.besolution.utils.ScreenFactory;
 
@@ -35,6 +35,7 @@ public class NewSolutionView extends HorizontalLayout{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private static final Logger LOG = LoggerFactory.getLogger(NewSolutionView.class);
 
 	private Scroller panel = null;
 	private VerticalLayout vLayoytFirstForm  = null;
@@ -114,7 +115,7 @@ public class NewSolutionView extends HorizontalLayout{
 			vLayoytMenu.add(heading,hLayoutTemp,hLayoutInfo);
 			add(vLayoytMenu);
 		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, NewSolutionView.class);
+			LOG.error("Error: {}", e.getMessage());
 
 		}
 
@@ -131,7 +132,7 @@ public class NewSolutionView extends HorizontalLayout{
 			add(panel);
 
 		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, NewSolutionView.class);
+			LOG.error("Error: {}", e.getMessage());
 
 		}
 
@@ -150,7 +151,7 @@ public class NewSolutionView extends HorizontalLayout{
 
 			H1 heading = new H1("Template");
 
-			H2 title = new H2("Choose a template or create a new solution from scratch");
+			H2 title = new H2("Choose a template or create a new solution from scracth");
 
 			HorizontalLayout hLayoyt = new HorizontalLayout();
 
@@ -173,33 +174,19 @@ public class NewSolutionView extends HorizontalLayout{
 			hLayoutFooter.getStyle().set("margin-left", "auto");
 
 			Button btnCancel= new Button("Cancel");
-			btnCancel.addThemeVariants(ButtonVariant.LUMO_ERROR);
+			btnCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
 
 			btnCancel.addClickListener(x -> {
 				try {
 
-					UI.getCurrent().getPage().reload();
 
 				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
-				}
-			});
-			
-			Button btnReset= new Button("Reset");
-
-			btnReset.addClickListener(x -> {
-				try {
-
-					radioBtnGrp.clear();
-					cboTemplates.clear();
-
-				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+					LOG.error("Error: {}", e.getMessage());
 				}
 			});
 
 			Button btnNext  = new Button("Next");
-			btnNext.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+			btnNext.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
 			btnNext.addClickListener(x -> {
 				try {
@@ -214,17 +201,17 @@ public class NewSolutionView extends HorizontalLayout{
 
 
 				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+					LOG.error("Error: {}", e.getMessage());
 				}
 			});
 
-			hLayoutFooter.add(btnCancel,btnReset,btnNext);
+			hLayoutFooter.add(btnCancel,btnNext);
 
 			vLayoytFirstForm.add(heading,title,hLayoyt,hLayoutFooter);
 
 
 		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, NewSolutionView.class);
+			LOG.error("Error: {}", e.getMessage());
 
 		}
 
@@ -248,7 +235,7 @@ public class NewSolutionView extends HorizontalLayout{
 			txtName.setMaxLength(64);
 			txtName.setRequired(true);
 			txtName.setErrorMessage("Name is required");
-
+			
 			TextField txtPrefix = new TextField("Prefix");
 			txtPrefix.setWidth("50%");
 			txtPrefix.setRequired(true);
@@ -262,66 +249,64 @@ public class NewSolutionView extends HorizontalLayout{
 			txtDesc.setRequired(true);
 			txtDesc.setMaxLength(500);
 			txtDesc.setErrorMessage("Description is required");
-
+			
 			txtName.addValueChangeListener(e -> {
 				try {
-
+					
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-
+						
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-
+						
 					}else {
-
+						
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
-
+						
 					}
-
-				} catch (Exception exp) {
-					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
-
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
 				}
 			});
 
-
+			
 			txtPrefix.addValueChangeListener(e -> {
 				try {
-
+					
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-
+						
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-
+						
 					}else {
-
+						
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
 					}
-
-				} catch (Exception exp) {
-					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
-
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
 				}
 			});
 
-
+			
 			txtDesc.addValueChangeListener(e -> {
 				try {
-
+					
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-
+						
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-
+						
 					}else {
-
+						
 						IcoChkBxInfoChecked.setVisible(false);
 						IcoChkBxInfoUnChecked.setVisible(true);
 					}
-
-				} catch (Exception exp) {
-					CommonUtils.printStakeTrace(exp, NewSolutionView.class);
+					
+				} catch (Exception e2) {
+					LOG.error("Error: {}", e2.getMessage());
 				}
 			});
 
@@ -329,12 +314,12 @@ public class NewSolutionView extends HorizontalLayout{
 			HorizontalLayout hLayoutFooter = new HorizontalLayout();
 			hLayoutFooter.getStyle().set("margin-top", "auto");
 			hLayoutFooter.setWidthFull();
-		
 
-			Button btnReset= new Button("Reset");
-			btnReset.getStyle().set("margin-right", "auto");
+			Button btnCancel= new Button("Cancel");
+			btnCancel.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
+			btnCancel.getStyle().set("margin-right", "auto");
 
-			btnReset.addClickListener(x -> {
+			btnCancel.addClickListener(x -> {
 				try {
 
 					txtName.clear();
@@ -342,12 +327,12 @@ public class NewSolutionView extends HorizontalLayout{
 					txtDesc.clear();
 
 				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+					LOG.error("Error: {}", e.getMessage());
 				}
 			});
 
 			Button btnBack= new Button("Back");
-			btnBack.addThemeVariants(ButtonVariant.LUMO_ERROR);
+			btnBack.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_ERROR);
 
 			btnBack.addClickListener(x -> {
 				try {
@@ -357,49 +342,48 @@ public class NewSolutionView extends HorizontalLayout{
 					panel.setContent(vLayoytFirstForm);
 
 				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+					LOG.error("Error: {}", e.getMessage());
 				}
 			});
 
 			Button btnCreate  = new Button("Create");
-			btnCreate.addThemeVariants(ButtonVariant.LUMO_SUCCESS);
+			btnCreate.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_SUCCESS);
 
 			btnCreate.addClickListener(x -> {
 				try {
 
 					if(!CommonUtils.isNullOrEmptyString(txtName.getValue()) && !CommonUtils.isNullOrEmptyString(txtPrefix.getValue()) && !CommonUtils.isNullOrEmptyString(txtDesc.getValue())) {
-
+						
 						IcoChkBxInfoUnChecked.setVisible(false);
 						IcoChkBxInfoChecked.setVisible(true);
-
+						
 						Solution solution = new Solution();
 						solution.setTemplateName(txtName.getValue());
 						solution.setPrefix(txtPrefix.getValue());
 						solution.setDescription(txtDesc.getValue());
-
+											
 						SolutionPresenter presenter = new SolutionPresenter();
 						ApiRestResponse response = presenter.createNewSolution(solution);
 						if(!response.getIsSuccess()) {
-
+							
 							Notification.show(response.getErrorMessage());
-
+							
 							IcoChkBxInfoChecked.setVisible(false);
 							IcoChkBxInfoUnChecked.setVisible(true);
-
+							
 						}else {
 							txtName.clear();
 							txtPrefix.clear();
 							txtDesc.clear();
-
+							
 							ObjectMapper objectMapper = new ObjectMapper();
 							objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 							SolutionModel solutionModel = objectMapper.readValue(response.getData().toString(), new TypeReference<SolutionModel>(){});
 
-							VaadinSession.getCurrent().setAttribute(Constants.SOLUTION_MODEL, solutionModel);
 							ScreenFactory.getInstance().solutionDetailView.setData(solutionModel);
 							ScreenFactory.getInstance().mainNavigationView.changeContent(ScreenFactory.getInstance().solutionDetailView);
 							ScreenFactory.getInstance().mainview.changeScreen(ScreenFactory.getInstance().mainNavigationView);
-
+							
 						}
 					}else if(CommonUtils.isNullOrEmptyString(txtName.getValue())) {
 						txtName.setInvalid(true);
@@ -411,17 +395,17 @@ public class NewSolutionView extends HorizontalLayout{
 					}
 
 				} catch (Exception e) {
-					CommonUtils.printStakeTrace(e, NewSolutionView.class);
+					LOG.error("Error: {}", e.getMessage());
 				}
 			});
 
-			hLayoutFooter.add(btnReset,btnBack,btnCreate);
+			hLayoutFooter.add(btnCancel,btnBack,btnCreate);
 
 			vLayoytSecondForm.add(heading,txtName,txtPrefix,txtDesc,hLayoutFooter);
 
 
 		} catch (Exception e) {
-			CommonUtils.printStakeTrace(e, NewSolutionView.class);
+			LOG.error("Error: {}", e.getMessage());
 
 		}
 

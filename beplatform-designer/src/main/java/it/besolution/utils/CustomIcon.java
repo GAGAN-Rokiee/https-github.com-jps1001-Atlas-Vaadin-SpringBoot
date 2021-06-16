@@ -6,10 +6,10 @@ import com.vaadin.flow.component.icon.Icon;
 /**
  * Ico-Moon icons from https://icomoon.io/
  * 
- * @author Faisal
+ * @author Marcus
  *
  */
-@JsModule("./src/customIcons.js")
+@JsModule("frontend://src/customIcons.js")
 public enum CustomIcon {
 
   
