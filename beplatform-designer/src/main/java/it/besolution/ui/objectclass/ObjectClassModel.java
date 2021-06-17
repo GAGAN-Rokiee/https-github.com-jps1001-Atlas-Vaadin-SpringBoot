@@ -11,6 +11,8 @@ import lombok.ToString;
 @ToString
 public class ObjectClassModel {
 
+	private int id;
+	
 	private String basePath = "";
 	private int baseType;
 	private String className;

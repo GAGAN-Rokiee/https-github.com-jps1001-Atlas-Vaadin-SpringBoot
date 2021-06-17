@@ -122,16 +122,16 @@ public class PropertyRepository {
     }
 
 	public Property save(Property property) throws Exception {
-		  String sql = "INSERT INTO PROPERTY  (ID, SOLUTION_ID, OBJECT_CLASS_ID , PROPERTY_NAME, PROPERTY_TYPE, LABEL" +
+		  String sql = "INSERT INTO PROPERTY  (SOLUTION_ID, OBJECT_CLASS_ID , PROPERTY_NAME, PROPERTY_TYPE, LABEL" +
 	                ", CONSTRAINT_KEY, CONSTRAINT_VALUE, IS_NULL, DEFAULT_VALUE, LAST_UPDATED )"+
-	                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	        LOG.info("Query: {}", sql);
 	        LOG.info("Params: {}", property.toString());
 
 	        try {
 
-	            int val = jdbcTemplate.update(sql, property.getId(),property.getSolutionId(), property.getObjectClassId()
+	            int val = jdbcTemplate.update(sql, property.getSolutionId(), property.getObjectClassId()
 	                    , property.getPropertyName(),property.getPropertyType(), property.getLabel()
 	                    , property.getConstraintKey(), property.getConstraintValue(), property.getPropertyIsNull(),property.getDefaultValue()
 	                    , property.getLastUpdated() );

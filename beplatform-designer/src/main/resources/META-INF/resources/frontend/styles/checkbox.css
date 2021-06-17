@@ -1,6 +1,7 @@
 :host(.chkBxNewSolution) [part="checkbox"] {
-    background: white;
+	background: white;
 }
-:host(.chkBxNewSolution[checked]) [part="checkbox"]{
-	background: var(--lumo-primary-color);
+
+:host(.chkBxNewSolution[checked]) [part="checkbox"] {
+	background: var(- -lumo-primary-color);
 }

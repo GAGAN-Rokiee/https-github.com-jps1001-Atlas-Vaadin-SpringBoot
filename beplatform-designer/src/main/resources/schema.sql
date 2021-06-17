@@ -127,8 +127,4 @@ CREATE TABLE IF NOT EXISTS counter
     counter_name     VARCHAR(100) not NULL,
     last_updated     TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
     FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
-
 );
-
-
-
