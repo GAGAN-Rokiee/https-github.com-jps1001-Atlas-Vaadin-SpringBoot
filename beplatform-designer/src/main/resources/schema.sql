@@ -70,6 +70,39 @@ CREATE TABLE IF NOT EXISTS workflow_advanced
     FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
 );
 
+CREATE TABLE IF NOT EXISTS workflow_advanced_settings
+(
+    id                   INT AUTO_INCREMENT PRIMARY KEY,
+    workflow_id          INT NOT NULL,
+    setting_name         VARCHAR(100) NOT NULL,
+    setting_value        VARCHAR(100) NOT NULL,
+    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
+);
+
+CREATE TABLE IF NOT EXISTS form_master
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    object_class_id      INT NOT NULL,
+    label        VARCHAR(255)  NULL,
+    object_class_name   VARCHAR(255) NULL,
+    registry   VARCHAR(255) NULL,
+    file_name   VARCHAR(255) NOT NULL,
+    last_updated  TIMESTAMP   NOT NULL DEFAULT CURRENT_DATE,
+    solution_id INT NOT NULL,
+    FOREIGN KEY (object_class_id) REFERENCES object_class(id) ON UPDATE NO ACTION ON DELETE CASCADE,
+    FOREIGN KEY (solution_id) REFERENCES solutions(id) ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS form_attributes
+(
+    id            INT AUTO_INCREMENT PRIMARY KEY,
+    master_id      INT NOT NULL,
+    attribute_name        VARCHAR(255) NOT NULL,
+    attribute_value        VARCHAR(255) NOT NULL,
+    last_updated  TIMESTAMP        NOT NULL DEFAULT CURRENT_DATE,
+    FOREIGN KEY (master_id) REFERENCES form_master(id) ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS PROPERTY
 (
     ID INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,14 +120,6 @@ CREATE TABLE IF NOT EXISTS PROPERTY
     FOREIGN KEY (object_class_id) REFERENCES object_class(id) ON UPDATE NO ACTION ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS workflow_advanced_settings
-(
-    id                   INT AUTO_INCREMENT PRIMARY KEY,
-    workflow_id          INT NOT NULL,
-    setting_name         VARCHAR(100) NOT NULL,
-    setting_value        VARCHAR(100) NOT NULL,
-    FOREIGN KEY (workflow_id) REFERENCES workflow_master(id)
-);
 CREATE TABLE IF NOT EXISTS counter
 (
     id               INT AUTO_INCREMENT PRIMARY KEY,
